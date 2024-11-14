@@ -1,19 +1,24 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import { FaUser, FaLock } from 'react-icons/fa';
 import useAxiosSupport from '../hooks/useAxiosSupport';
 import Spinner from '../components/Spinner';
-import {loginSuccess, setAuthenticate} from "../redux/reducers/userReducer";
+import {loginSuccess, logout, setAuthenticate} from "../redux/reducers/userReducer";
 
 function Login() {
     const axiosSupport = useAxiosSupport();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [loading, setLoading] = React.useState(false);
+    const user = useSelector(state => state.user);
+
+    useEffect(() => {
+        dispatch(logout())
+    }, []);
 
     const formik = useFormik({
         initialValues: {
@@ -40,8 +45,15 @@ function Login() {
                 if (response.status === 200) {
                     const data = await response.json();
                     dispatch(setAuthenticate(data.accessToken, data.roles,data.id));
+                    if(user?.authenticate && data.roles.some(role => role.authority === 'ROLE_USER')) {
+                        const user = await axiosSupport.getUserDetail(data.id);
+                        if(response.status === 200)
+                            dispatch(loginSuccess(user));
+                        else
+                            toast.error('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập.');
+                        toast.success('Đăng nhập thành công!');
 
-                    toast.success('Đăng nhập thành công!');
+                    }
                     if (data.roles.some(role => role.authority === 'ROLE_ADMIN' || data.roles.some(role => role.authority === 'ROLE_MERCHANT' ))) {
                         navigate('/dashboard/');
                     } else {

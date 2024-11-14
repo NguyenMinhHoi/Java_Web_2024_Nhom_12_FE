@@ -1,13 +1,21 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaBars } from 'react-icons/fa';
+import React, {useRef, useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+import {FaBars, FaShoppingCart} from 'react-icons/fa';
+import {useSelector} from "react-redux";
 
 const HomeHeader = () => {
+    const navigate = useNavigate();
+
+    const handleCartClick = () => {
+        navigate('/cart');
+    };
+
+    const [dropDownBar, setDropdownBar] = useState(false);
     return (
         <header className="bg-[#0b328f] text-white sticky top-0 z-50 shadow-md">
             <div className="container mx-auto px-4 py-4">
                 <div className="flex justify-between items-center">
-                    <a href="/public" className="flex items-center space-x-2">
+                    <a href="/home" className="flex items-center space-x-2">
                         <span className="text-lg sm:text-2xl">HTQ eCommerce</span>
                     </a>
                     <nav className="hidden md:block">
@@ -22,10 +30,21 @@ const HomeHeader = () => {
                                     Đăng Nhập
                                 </Link>
                             </li>
+                            <li>
+                                <button onClick={handleCartClick}
+                                        className="text-white hover:text-[#f2a429] transition-colors">
+                                    <FaShoppingCart className="h-6 w-6"/>
+                                </button>
+                            </li>
                         </ul>
                     </nav>
                     <button className="md:hidden bg-transparent border-none text-white">
-                        <FaBars className="h-6 w-6"/>
+                        <FaBars className="h-6 w-6" onClick={()=>setDropdownBar(!dropDownBar)}/>
+                        {
+                            <div>
+
+                            </div>
+                        }
                     </button>
                 </div>
             </div>
