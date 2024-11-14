@@ -1,0 +1,27 @@
+const urlManager = {
+      login: "/login",
+      register: "/register",
+      createProduct: "/products",
+      createMerchant: '/merchants',
+      getMerchant: (id)=> `/merchants/${id}`,
+      getProductByMerchantId: (id)=> `/products/merchant/${id}`,
+      getAllCategories: '/categories',
+      getVariantByProductId: (id)=> `/products/variant/${id}`,
+      saveVariants: (id) => `/products/variant/save/${id}`,
+      updateVariant: "/products/variants",
+      getAllProducts: "/products",
+      getDetailProduct: (id)=> `/products/${id}/details`,
+      updateCart: "/cart",
+      getUserById: (id)=> `/users/${id}`,
+      getCartByUserId:(id)=> `/cart/user/${id}`,
+      updateVariantCard: (params)=> `/cart/re-variant/${params.userId}/${params.variantCurrent}/${params.variantNew}`,
+      createReview: "/reviews",
+      getReviewsByProductId: (id)=> `/reviews/product/${id}`,
+      getUserDetail: (id)=> `/users/${id}`,
+      saveUserAddress: (userId)=> `/addresses/user/${userId}`,
+      createOrder: "/orders",
+      getOneVariant: (productId)=> `/products/variant/one/${productId}`,
+      getShopDetails: (id)=> `/merchants/details/${id}`,
+};
+
+export default urlManager;
