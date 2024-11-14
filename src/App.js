@@ -17,6 +17,7 @@ import {persistor, store} from "./redux/store";
 import ProductDetail from "./components/ProductDetail";
 import Cart from "./components/Cart";
 import PaymentPage from "./pages/PaymentPage";
+import ShopDetail from "./components/ShopDetail";
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
                       <Route path='/register' element={<Register />} />
                       <Route path='/merchant/register' element={<CreateMerchantForm />} />
                       <Route path='/cart' element={<Cart />} />
+                      <Route path='/shop/:id' element={<ShopDetail/>}></Route>
                       {/* client */}
                       <Route
                           path='/client/*'

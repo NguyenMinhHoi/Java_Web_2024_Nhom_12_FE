@@ -15,19 +15,24 @@ const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
     const [total, setTotal] = useState(0);
     const {id : userId} = useSelector(state => state.user);
+    const cart = useSelector(state => state.cart);
     const [selectedVariants, setSelectedVariants] = useState([]);
     const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchCartItems = async () => {
             try {
-                const response = await axiosSupport.getCartByUserId(userId);
-                const cartItemsWithDefaultQuantity = response.variants.map(item => ({
-                    ...item,
-                    quantity: 1,
-                    itemQuantity: item.quantity
-                }));
-                setCartItems(cartItemsWithDefaultQuantity);
+                if(userId){
+                    const response = await axiosSupport.getCartByUserId(userId);
+                    const cartItemsWithDefaultQuantity = response.variants.map(item => ({
+                        ...item,
+                        quantity: 1,
+                        itemQuantity: item.quantity
+                    }));
+                    setCartItems(cartItemsWithDefaultQuantity);
+                }else{
+                    setCartItems([...cart.items]);
+                }
             } catch (error) {
                 console.error('Error fetching cart items:', error);
             }
@@ -70,6 +75,7 @@ const Cart = () => {
         acc[item.product.merchant.id].items.push(item);
         return acc;
     }, {});
+
     const handleProceedToPayment = () => {
         const selectedItems = cartItems.filter(item => selectedVariants.includes(item.id));
         console.log("selectedItems: ", selectedItems);

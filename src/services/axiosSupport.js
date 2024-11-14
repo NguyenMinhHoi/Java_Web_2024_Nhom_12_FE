@@ -227,6 +227,18 @@ class AxiosSupport {
         });
     }
 
+    async getOneVariant(productId) {
+        return this.fetchWithAuth('getOneVariant', {
+            method: 'GET',
+        },productId);
+    }
+
+    async getShopDetails(shopId) {
+        return this.fetchWithAuth('getShopDetails', {
+            method: 'GET',
+        },shopId);
+    }
+
 }
 
 export default AxiosSupport;

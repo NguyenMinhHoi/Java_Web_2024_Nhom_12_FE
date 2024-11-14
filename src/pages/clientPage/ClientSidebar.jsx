@@ -1,14 +1,28 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiHome, FiBook, FiRadio, FiList, FiMusic, FiUser, FiDisc, FiHelpCircle, FiX } from 'react-icons/fi';
-import ThanhDoBlueLogo from '../../assets/images/logo_blue_thanh_do.png';
+import {
+  FiHome,
+  FiBook,
+  FiRadio,
+  FiList,
+  FiMusic,
+  FiUser,
+  FiDisc,
+  FiHelpCircle,
+  FiX,
+  FiLogOut,
+  FiSettings
+} from 'react-icons/fi';
 
 export default function ClientSidebar({ isOpen, onClose }) {
   const location = useLocation();
   const path = location.pathname;
 
   const navItems = [
-    { to: '/home', label: 'Trang chủ', icon: FiHome }
+    { to: '/home', label: 'Trang chủ', icon: FiHome },
+    {to: '/client/profile', label: 'Hồ sơ', icon: FiUser},
+    {to: '/client/settings',label: 'Cài đặt',icon: FiSettings},
+    {to: '/login',label: 'Đăng xuất',icon: FiLogOut}
   ];
 
   const renderNavItem = (item) => {
@@ -40,7 +54,6 @@ export default function ClientSidebar({ isOpen, onClose }) {
         isOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
         <div className="flex justify-between items-center p-4">
-          <img src={ThanhDoBlueLogo} alt="Thư viện Thành Đô Logo" className="h-8" />
           <button onClick={onClose}>
             <FiX className="h-6 w-6" />
           </button>
