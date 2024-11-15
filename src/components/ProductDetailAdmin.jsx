@@ -34,7 +34,7 @@ const ProductDetailAdmin = ({ product, onEdit, onDelete }) => {
             }
         };
         fetchVariants();
-    }, [saveGroupOption]);
+    }, []);
 
     const nextImage = () => {
         setCurrentImageIndex((prevIndex) =>
