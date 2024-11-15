@@ -18,7 +18,9 @@ export default function ClientHeader({ currentUser, onMenuClick }) {
       const updatedUser = await axiosSupport.getUserById(currentUser);
       setCurrentUser(updatedUser);
     };
-    fetchUser();
+    if(currentUser){
+      fetchUser();
+    }
   }, []);
 
   const handleCartClick = () => {
