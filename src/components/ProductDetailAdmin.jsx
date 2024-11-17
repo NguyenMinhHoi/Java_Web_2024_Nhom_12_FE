@@ -107,8 +107,6 @@ const ProductDetailAdmin = ({ product, onEdit, onDelete }) => {
         setIsAddingGroupOption(true);
     };
 
-    const [groupOptions,setGroupOptions] = useState(product?.groupOptions || []);
-
     const saveGroupOption = () => {
 
         const existingIndex = groupOptions.findIndex(groupOption => groupOption.name === newGroupOption.name);
