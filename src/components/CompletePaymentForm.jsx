@@ -37,8 +37,6 @@ const CompletePaymentForm = ({selectedVariants, total, onSubmit}) => {
         acc[item.product.merchant.id].items.push(item);
         return acc;
     }, {});
-
-
     const groupSize = Object.keys(groupedItems).length;
 
     const AddressSelector = () => {

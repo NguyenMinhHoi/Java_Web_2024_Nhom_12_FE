@@ -65,7 +65,6 @@ const userReducer = (state = initialState, action) => {
 
 export default userReducer;
 
-// Action creators
 export const loginRequest = () => ({
   type: LOGIN_REQUEST
 });

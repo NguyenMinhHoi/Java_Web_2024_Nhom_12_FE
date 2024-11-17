@@ -6,6 +6,8 @@ import { FiArrowUp, FiArrowDown } from 'react-icons/fi';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import ProductHomeCard from "./ProductHomeCard";
+import HomeProductCard from "./ProductHomeCard";
 
 const CollectionSection = ({ products, renderCollectionCards }) => {
     const [showMore, setShowMore] = useState(false);
@@ -35,11 +37,11 @@ const CollectionSection = ({ products, renderCollectionCards }) => {
                         pagination={{ clickable: true }}
                         className="mb-8"
                     >
-                        {renderCollectionCards(products)}
+                        {renderCollectionCards(products.slice(0, 8))}
                     </Swiper>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
-                        {renderCollectionCards(products)}
+                        {products.map(product => <HomeProductCard item={product} />)}
                     </div>
                 )}
 
