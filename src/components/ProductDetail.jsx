@@ -14,6 +14,7 @@ import VariantSelect from "./VariantSelect";
 import {useDispatch, useSelector} from "react-redux";
 import ClientHeader from "../pages/clientPage/ClientHeader";
 import {addToCart} from "../redux/reducers/cartReducer";
+import {formatLastAccess} from "../utils/DateUtil";
 
 const ProductDetail = () => {
     const {id} = useParams();
@@ -35,6 +36,7 @@ const ProductDetail = () => {
     const [rating, setRating] = useState(0);
     const [isAnimating, setIsAnimating] = useState(false);
     const [isAddingToCart, setIsAddingToCart] = useState(false);
+    const [shop,setShop] = useState(null);
 
 
     const navigate = useNavigate();
@@ -82,6 +84,10 @@ const ProductDetail = () => {
                 setImages(allImages);
 
                 setSelectedImage(0);
+
+                if(res.merchant){
+                    setShop(res.merchant);
+                }
 
             } catch (error) {
                 console.error("Error fetching product details:", error);
@@ -295,6 +301,7 @@ const ProductDetail = () => {
                             </div>
                         </div>
                         <div>
+
                             <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
                             <p className="text-gray-600 mb-4">{product.description}</p>
                             <div className="flex items-center mb-4">
@@ -319,7 +326,50 @@ const ProductDetail = () => {
                                 <span
                                     className="inline-block bg-red-500 text-white px-2 py-1 rounded-full text-sm font-bold mb-4">Sale</span>
                             )}
-
+                            <button>
+                                <div
+                                    className="flex items-center mb-4 p-3 bg-white shadow-md rounded-lg hover:shadow-lg transition-shadow duration-300 max-w-lg relative"
+                                    onClick={() => {
+                                        navigate(`/shop/${shop.id}`)
+                                    }}
+                                >
+                                    <img src={shop.logo} alt="Shop Logo"
+                                         className="w-12 h-12 mr-3 rounded-full border border-gray-300"/>
+                                    <div className="flex justify-between items-start">
+                                        <div className="flex-1 mr-4">
+                                            <div className="flex items-center text-sm text-gray-600 mt-1 whitespace-nowrap">
+                                                <span className="text-lg font-semibold">{shop.name}</span>
+                                            </div>
+                                            <div className="flex items-center text-sm text-gray-600 mt-1 whitespace-nowrap">
+                                                <div className="flex text-yellow-400 mr-2">
+                                                    {[...Array(5)].map((_, i) => (
+                                                        <FaStar key={i}
+                                                                className={i < Math.floor(shop.rating) ? 'text-yellow-400' : 'text-gray-300'}/>
+                                                    ))}
+                                                </div>
+                                                <span className="text-sm text-gray-600">{Number(shop.rating || 0).toFixed(2)}</span>
+                                            </div>
+                                        </div>
+                                        <div className="flex-1">
+                                            <div
+                                                className="flex items-center text-sm text-gray-600 mt-1 whitespace-nowrap">
+                                                <span className="text-xs text-gray-500">{shop.description}</span>
+                                            </div>
+                                            <div
+                                                className="flex items-center text-sm text-gray-600 mt-1 whitespace-nowrap">
+                                                <span
+                                                    className="text-xs text-gray-500">Online {formatLastAccess(shop.last_access)}</span>
+                                            </div>
+                                            <div
+                                                className="flex items-center text-sm text-gray-600 mt-1 whitespace-nowrap">
+                                                <span className="text-xs text-gray-500">Đã bán {shop.sold}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        className="absolute inset-0 bg-transparent hover:bg-[url('https://path-to-your-calculator-icon.png')] bg-no-repeat bg-center opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                                </div>
+                            </button>
                             <div className="border-t pt-4">
                                 <h3 className="text-lg font-semibold mb-2">Thông tin thêm:</h3>
                                 <p className="text-sm text-gray-600 mb-1">Danh mục: {product.category.name}</p>
@@ -335,10 +385,11 @@ const ProductDetail = () => {
                                     onClick={animateAddToCart}
                                     className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition-colors flex items-center justify-center transform hover:scale-105 active:scale-95 duration-300"
                                 >
-                                    <FaShoppingCart className="mr-2"/> 
+                                    <FaShoppingCart className="mr-2"/>
                                     <span className="relative">
                                         Thêm vào giỏ hàng
-                                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center transform scale-0 transition-transform duration-300 group-hover:scale-100">
+                                        <span
+                                            className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center transform scale-0 transition-transform duration-300 group-hover:scale-100">
                                             +1
                                         </span>
                                     </span>
@@ -357,7 +408,7 @@ const ProductDetail = () => {
                     <div className="mt-12">
                         <h2 className="text-2xl font-bold mb-4">Đánh giá sản phẩm</h2>
                         <div className="mb-6">
-                            <form onSubmit={handleSubmitComment} className="mt-6">
+                        <form onSubmit={handleSubmitComment} className="mt-6">
                                 <div className="flex mb-4">
                                     {[...Array(5)].map((_, index) => (
                                         <FaStar

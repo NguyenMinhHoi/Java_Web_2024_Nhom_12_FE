@@ -22,6 +22,8 @@ const ProductDetailAdmin = ({ product, onEdit, onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedVariants, setEditedVariants] = useState([]);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [groupOptions,setGroupOptions] = useState(product?.groupOptions || []);
+
 
     useEffect(() => {
         const fetchVariants = async () => {
@@ -34,7 +36,7 @@ const ProductDetailAdmin = ({ product, onEdit, onDelete }) => {
             }
         };
         fetchVariants();
-    }, []);
+    }, [groupOptions]);
 
     const nextImage = () => {
         setCurrentImageIndex((prevIndex) =>
