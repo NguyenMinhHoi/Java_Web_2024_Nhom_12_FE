@@ -24,7 +24,7 @@ export default function ClientHeader({ currentUser, onMenuClick }) {
   }, []);
 
   const handleCartClick = () => {
-    navigate('/cart');
+    navigate('/client/cart');
   };
 
   useEffect(() => {
@@ -97,7 +97,7 @@ export default function ClientHeader({ currentUser, onMenuClick }) {
           {isUserMenuOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
                 <p className="px-4 py-2 text-sm text-gray-700">{currentUser?.email || 'user@example.com'}</p>
-                <Link to="/client/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Hồ
+                <Link to="/client/user/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Hồ
                   sơ</Link>
                 <Link to="/client/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cài
                   đặt</Link>

@@ -1,8 +1,11 @@
 import React from 'react';
 import { FiCheckCircle } from 'react-icons/fi';
 import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 const CompletePayment = ({ orders }) => {
+    const id = useSelector(state=>state.user.id);
+
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
         return new Date(dateString).toLocaleDateString('vi-VN', options);
@@ -65,7 +68,7 @@ const CompletePayment = ({ orders }) => {
 
             <button
                 className="mt-6 w-full bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-300 text-lg"
-                onClick={()=>{navigate('/cart')}}
+                onClick={()=>{id ? navigate('/client/cart') : navigate('/cart')}}
             >
                 Tiếp tục mua sắm
             </button>

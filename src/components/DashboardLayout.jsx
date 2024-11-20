@@ -18,7 +18,7 @@ export default function DashboardLayout({ currentUser, onLogout }) {
             <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
             
             <main className="pt-16 min-h-screen">
-                <div className="container mx-auto px-6 py-8">
+                <div className="container-fluid md:container mx-auto px-6 py-8">
                     <Outlet />
                 </div>
             </main>

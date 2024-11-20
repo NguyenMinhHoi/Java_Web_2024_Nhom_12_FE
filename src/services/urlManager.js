@@ -22,6 +22,9 @@ const urlManager = {
       createOrder: "/orders",
       getOneVariant: (productId)=> `/products/variant/one/${productId}`,
       getShopDetails: (id)=> `/merchants/details/${id}`,
+      getOrdersByShopId: `/orders/merchant`,
+      getOrderById: (id)=> `/orders/${id}`,
+      getOrdersByUserId: (id)=> `/orders/user/${id}`,
 };
 
 export default urlManager;

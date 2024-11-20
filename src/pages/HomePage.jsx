@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {
   FaBook,
@@ -35,19 +35,13 @@ import HomeProductCard from "../components/ProductHomeCard";
 export default function HomePage() {
   const axiosSupport = useAxiosSupport();
 
-  const navigate = useNavigate();// Sử dụng hook để lấy dữ liệu từ API
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-
-  const [showMore, setShowMore] = useState(false);
+  const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(false);
-
-  const fetchProducts = async (page, size) => {
+  const fetchProducts = useCallback(async (page, size) => {
     setLoading(true);
     try {
       const response = await axiosSupport.getAllProduct(page, size);
@@ -58,21 +52,11 @@ export default function HomePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [axiosSupport]);
 
   useEffect(() => {
     fetchProducts(currentPage, pageSize);
-  }, []);
-
-  const loadMore = () => {
-    fetchProducts(currentPage + 1, pageSize);
-  };
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const dispatch = useDispatch();
+  }, [fetchProducts, currentPage, pageSize]);
 
   const [backgroundImage, setBackgroundImage] = useState("https://img.freepik.com/free-photo/cyber-monday-retail-sales_23-2148688493.jpg");
   const images = [
@@ -307,7 +291,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Footer */}
         <HomeFooter/>
       </div>
   );

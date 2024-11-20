@@ -20,7 +20,7 @@ const CategorySection = () => {
     };
 
     fetchCategories();
-  }, []);
+  }, [axiosSupport]);
 
   return (
     <div className="py-12 sm:py-16 bg-gray-100">

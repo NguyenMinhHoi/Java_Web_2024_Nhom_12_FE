@@ -18,11 +18,12 @@ import ProductDetail from "./components/ProductDetail";
 import Cart from "./components/Cart";
 import PaymentPage from "./pages/PaymentPage";
 import ShopDetail from "./components/ShopDetail";
+import UserProfile from "./components/UserProfile";
 
 
 function App() {
   return (
-      <StrictMode>
+
           <Provider store={store}>
               <PersistGate loading={null} persistor={persistor}>
                   <Routes>
@@ -34,6 +35,7 @@ function App() {
                       <Route path='/merchant/register' element={<CreateMerchantForm />} />
                       <Route path='/cart' element={<Cart />} />
                       <Route path='/shop/:id' element={<ShopDetail/>}></Route>
+                      <Route path='/client/profile' element={<UserProfile/>}></Route>
                       {/* client */}
                       <Route
                           path='/client/*'
@@ -56,7 +58,6 @@ function App() {
                   </Routes>
               </PersistGate>
           </Provider>
-      </StrictMode>
 
   );
 }

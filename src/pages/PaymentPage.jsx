@@ -9,7 +9,7 @@ const PaymentPage = ()=>{
     const {id: userId} = useSelector(state=>state.user);
     const {items,total} = useSelector(state=>state.cart);
      return <>
-         {userId ? <ClientHeader currentUser={userId}/> : <HomeHeader/>}
+         {!userId && <HomeHeader/>}
          <div className="p-6">
              <CompletePaymentForm
                  selectedVariants={items}

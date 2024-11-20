@@ -239,6 +239,29 @@ class AxiosSupport {
         },shopId);
     }
 
+    async getOrdersByShopId(shopId,page,size) {
+        return this.fetchWithAuth('getOrdersByShopId', {
+            params:{
+                merchantNumber: shopId,
+                page: page,
+                size: size
+            },
+            method: 'GET',
+        },shopId);
+    }
+
+    async getOrderById(id) {
+        return this.fetchWithAuth('getOrderById', {
+            method: 'GET',
+        },id);
+    }
+
+    async getOrdersByUserId(id) {
+        return this.fetchWithAuth('getOrdersByUserId', {
+            method: 'GET',
+        },id);
+    }
+
 }
 
 export default AxiosSupport;

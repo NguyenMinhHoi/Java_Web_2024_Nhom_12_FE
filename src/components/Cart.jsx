@@ -80,12 +80,12 @@ const Cart = () => {
         const selectedItems = cartItems.filter(item => selectedVariants.includes(item.id));
         console.log("selectedItems: ", selectedItems);
         dispatch({ type: 'SET_CART_ITEMS', payload: selectedItems });
-        navigate('/payment');
+        userId ? navigate('/client/payment') : navigate('/payment') ;
     };
 
     return (
         <>
-            {userId ? <ClientHeader currentUser={userId} onLogout={()=>{navigate('/login')}}/> : <HomeHeader/>}
+            {!userId && <HomeHeader/>}
             <div className="container mx-auto p-4 md:w-[50vw] xs:w-full">
                 <h1 className="text-2xl font-bold mb-4">Giỏ hàng</h1>
                 {Object.values(groupedItems).map((shop) => (
@@ -137,9 +137,9 @@ const Cart = () => {
                     </button>
                 </div>
             </div>
-            <div className="hidden sm:block">
+            {!userId && <div className="hidden sm:block">
                 <HomeFooter/>
-            </div>
+            </div>}
         </>
     );
 };

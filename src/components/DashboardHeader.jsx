@@ -49,7 +49,7 @@ export default function DashboardHeader({ currentUser, onLogout, onMenuClick }) 
 
                 <nav className="hidden md:flex space-x-4">
                     <Link to="/dashboard/home" className="text-sm font-medium text-gray-500 hover:text-gray-700">Trang chủ</Link>
-                    <Link to="/dashboard/product" className="text-sm font-medium text-gray-500 hover:text-gray-700">Đơn hàng</Link>
+                    <Link to="/dashboard/order" className="text-sm font-medium text-gray-500 hover:text-gray-700">Đơn hàng</Link>
                     <Link to="/dashboard/product" className="text-sm font-medium text-gray-500 hover:text-gray-700">Sản phẩm</Link>
                     <Link to="/dashboard/users" className="text-sm font-medium text-gray-500 hover:text-gray-700">Người dùng</Link>
                 </nav>
@@ -76,7 +76,7 @@ export default function DashboardHeader({ currentUser, onLogout, onMenuClick }) 
                     {isUserMenuOpen && (
                         <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
                             <p className="px-4 py-2 text-sm text-gray-700">{currentUser?.email || 'admin@example.com'}</p>
-                            <Link to="/dashboard/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</Link>
+                            <Link to="/dashboard/merchant/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</Link>
                             <Link to="/dashboard/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</Link>
                             <button
                                 onClick={handleLogout}
