@@ -34,11 +34,9 @@ export default function ClientPage() {
              <Route path="/cart" element={<Cart/>} />
              <Route path="/payment" element={<PaymentPage />} />
              <Route path="/user/profile" element={
-                 <main className="pt-16 min-h-screen">
-                     <div className="container-fluid md:container mx-auto px-6 py-8">
+                     <div className="pt-16">
                          <UserProfile />
                      </div>
-                 </main>
              }/>
          </Route>
      </Routes>

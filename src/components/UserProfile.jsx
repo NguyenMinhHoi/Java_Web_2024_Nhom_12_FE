@@ -5,7 +5,21 @@ import UserOrderList from "./UserOrderList";
 import {useSelector} from "react-redux";
 import useAxiosSupport from "../hooks/useAxiosSupport";
 import default_image from '../assets/images/default-image.svg';
+import UserOrderPage from "./UserOrderPage";
 
+const NavItem = ({ icon, label, active, onClick }) => {
+    return (
+        <button
+            className={`flex items-center w-full px-4 md:px-6 py-3 text-left ${
+                active ? 'bg-blue-100 text-blue-600' : 'text-gray-700 hover:bg-gray-100'
+            }`}
+            onClick={onClick}
+        >
+            {icon}
+            <span className="ml-3 hidden md:inline">{label}</span>
+        </button>
+    )
+}
 
 const UserProfile = () => {
     const id = useSelector(state => state.user.id);
@@ -18,9 +32,9 @@ const UserProfile = () => {
         avatarUrl: 'https://randomuser.me/api/portraits/women/65.jpg'
     });
     const axiosSupport = useAxiosSupport();
-    const fetchUser = async () =>{
-       const res= await axiosSupport.getUserDetail(id);
-       setUser(res)
+    const fetchUser = async () => {
+        const res = await axiosSupport.getUserDetail(id);
+        setUser(res)
     }
 
     useEffect(() => {
@@ -43,15 +57,16 @@ const UserProfile = () => {
             case 'profile':
                 return (
                     <div className="space-y-4">
-                        <ProfileField icon={<FiUser />} label="Họ tên" value={user.name} isEditing={isEditing} />
-                        <ProfileField icon={<FiMail />} label="Email" value={user.email} isEditing={isEditing} />
-                        <ProfileField icon={<FiPhone />} label="Số điện thoại" value={user.phone} isEditing={isEditing} />
-                        <ProfileField icon={<FiMapPin />} label="Địa chỉ" value={user.address} isEditing={isEditing} />
-                        <ProfileField icon={<FiCalendar />} label="Ngày sinh" value={user.birthdate} isEditing={isEditing} />
+                        <ProfileField icon={<FiUser/>} label="Họ tên" value={user.name} isEditing={isEditing}/>
+                        <ProfileField icon={<FiMail/>} label="Email" value={user.email} isEditing={isEditing}/>
+                        <ProfileField icon={<FiPhone/>} label="Số điện thoại" value={user.phone} isEditing={isEditing}/>
+                        <ProfileField icon={<FiMapPin/>} label="Địa chỉ" value={user.address} isEditing={isEditing}/>
+                        <ProfileField icon={<FiCalendar/>} label="Ngày sinh" value={user.birthdate}
+                                      isEditing={isEditing}/>
                     </div>
                 );
             case 'orders':
-                return <UserOrderList />;
+                return <UserOrderPage/>;
             case 'personal':
                 return <p>Thông tin cá nhân khác sẽ được hiển thị ở đây.</p>;
             default:
@@ -60,38 +75,42 @@ const UserProfile = () => {
     };
 
     return (
-        <div className="flex bg-gray-100 min-h-screen">
-            <div className="w-64 bg-white shadow-lg">
-                <div className="p-6">
-                    <img src={user?.avatar?.path || default_image} alt="Avatar" className="w-32 h-32 rounded-full mx-auto mb-4" />
-                    <h2 className="text-xl font-bold text-center mb-6">{user.name}</h2>
+        <div className="flex flex-col md:flex-row bg-gray-100 min-h-screen">
+            {/* Navbar */}
+            <div className="w-full md:w-64 bg-white shadow-lg md:h-screen">
+                <div className="p-6 flex md:flex-col items-center justify-between md:justify-start">
+                    <img src={user?.avatar?.path || default_image} alt="Avatar"
+                         className="w-16 h-16 md:w-32 md:h-32 rounded-full mb-0 md:mb-4"/>
+                    <h2 className="text-xl font-bold text-center ml-4 md:ml-0 md:mt-4">{user.name}</h2>
                 </div>
-                <nav className="mt-6">
-                    <NavItem icon={<FiUser />} label="Hồ sơ" active={activeTab === 'profile'} onClick={() => setActiveTab('profile')} />
-                    <NavItem icon={<FiShoppingBag />} label="Đơn hàng" active={activeTab === 'orders'} onClick={() => setActiveTab('orders')} />
-                    <NavItem icon={<FiInfo />} label="Thông tin cá nhân" active={activeTab === 'personal'} onClick={() => setActiveTab('personal')} />
+                <nav className="flex md:flex-col mt-0 md:mt-6">
+                    <NavItem icon={<FiUser/>} label="Hồ sơ" active={activeTab === 'profile'}
+                             onClick={() => setActiveTab('profile')}/>
+                    <NavItem icon={<FiShoppingBag/>} label="Đơn hàng" active={activeTab === 'orders'}
+                             onClick={() => setActiveTab('orders')}/>
+                    <NavItem icon={<FiInfo/>} label="Thông tin cá nhân" active={activeTab === 'personal'}
+                             onClick={() => setActiveTab('personal')}/>
                 </nav>
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 p-10">
+            <div className="flex-1 p-4 md:p-10">
                 <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-                    <div className="p-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+                    <div className="p-4 md:p-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white">
                         <div className="flex items-center justify-between">
-                            <h2 className="text-2xl font-bold">{activeTab === 'profile' ? 'Hồ sơ người dùng' : activeTab === 'orders' ? 'Đơn hàng' : 'Thông tin cá nhân'}</h2>
+                            <h2 className="text-xl md:text-2xl font-bold">{activeTab === 'profile' ? 'Hồ sơ người dùng' : activeTab === 'orders' ? 'Đơn hàng' : 'Thông tin cá nhân'}</h2>
                             {activeTab === 'profile' && !isEditing && (
                                 <button
                                     onClick={handleEdit}
-                                    className="bg-white text-blue-600 px-4 py-2 rounded-full hover:bg-blue-100 transition duration-300"
+                                    className="bg-white text-blue-600 px-3 py-1 md:px-4 md:py-2 rounded-full hover:bg-blue-100 transition duration-300 text-sm md:text-base"
                                 >
-                                    <FiEdit2 className="inline mr-2" />
+                                    <FiEdit2 className="inline mr-1 md:mr-2"/>
                                     Chỉnh sửa
                                 </button>
                             )}
                         </div>
                     </div>
-
-                    <div className="p-6">
+                    <div className="p-4 md:p-6">
                         {renderContent()}
 
                         {isEditing && (
@@ -109,7 +128,9 @@ const UserProfile = () => {
             </div>
         </div>
     );
-};
+}
+
+
 
 const ProfileField = ({ icon, label, value, isEditing }) => (
     <div className="flex items-center">
@@ -129,16 +150,5 @@ const ProfileField = ({ icon, label, value, isEditing }) => (
     </div>
 );
 
-const NavItem = ({ icon, label, active, onClick }) => (
-    <button
-        className={`flex items-center w-full px-6 py-3 text-left ${
-            active ? 'bg-blue-100 text-blue-600' : 'text-gray-700 hover:bg-gray-100'
-        }`}
-        onClick={onClick}
-    >
-        {icon}
-        <span className="ml-3">{label}</span>
-    </button>
-);
 
 export default UserProfile;
