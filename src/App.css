@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes flashBlue {
+  0% {
+    background-color: #3b82f6; /* Bright blue */
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.flash-blue-animation {
+  animation: flashBlue 2s ease-out;
+}

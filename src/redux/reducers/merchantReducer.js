@@ -2,11 +2,13 @@ const SET_MERCHANT = 'SET_MERCHANT';
 const UPDATE_MERCHANT = 'UPDATE_MERCHANT';
 const CLEAR_MERCHANT = 'CLEAR_MERCHANT';
 const SET_PRODUCT = 'SET_PRODUCT';
+const SET_ORDERS = 'SET_ORDERS';
 
 // Initial State
 const initialState = {
     id: null,
     products: null,
+    orders: []
 };
 
 // Reducer
@@ -29,6 +31,11 @@ const merchantReducer = (state = initialState, action) => {
                 ...state,
                 products: action.payload,
             };
+        case SET_ORDERS:
+            return {
+                ...state,
+                orders: [...state.orders, ...action.payload],
+            }
         default:
             return state;
     }
@@ -36,6 +43,11 @@ const merchantReducer = (state = initialState, action) => {
 
 // Action Creators
 export const setMerchant = (merchantData) => ({
+    type: SET_MERCHANT,
+    payload: merchantData,
+});
+
+export const setOrder = (merchantData) => ({
     type: SET_MERCHANT,
     payload: merchantData,
 });

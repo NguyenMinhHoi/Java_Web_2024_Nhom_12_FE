@@ -3,17 +3,27 @@ import { useSelector } from "react-redux";
 import useAxiosSupport from "../hooks/useAxiosSupport";
 import UserOrderList from "../components/UserOrderList";
 import OrderUserDetail from "../components/OrderUserDetail";
+import {toast} from "react-toastify";
 
 const UserOrderPage = () => {
     const id = useSelector(state => state.user.id);
-    const axiosSupport = useAxiosSupport();
     const [orders, setOrders] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [pageable, setPageable] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const axiosInstance = useAxiosSupport();
+    const [selectedStatus, setSelectedStatus] = useState('PENDING');
 
-    const getUserOrders = async () => {
+
+    const PAGE_SIZE = 5;
+
+    const fetchOrders = async () => {
+        setLoading(true);
         try {
-            const res = await axiosSupport.getOrdersByUserId(id);
-            setOrders(res.map(order => ({
+            const response = await axiosInstance.getOrdersByUserId(id,currentPage,PAGE_SIZE,selectedStatus);
+            const formattedOrders = response.content.map(order => ({
                 id: order.orderCode,
                 status: order.status,
                 orderDate: new Date(order.orderDate).toISOString(),
@@ -23,15 +33,27 @@ const UserOrderPage = () => {
                     image: variant.image.path,
                     quantity: variant.quantity
                 }))
-            })));
+            }));
+            const uniqueOrders = [...new Map([...orders, ...formattedOrders].map(order => [order.id, order])).values()];
+            setOrders(uniqueOrders);
+            setTotalPages(Math.ceil(response.totalPages));
+            setPageable(Math.ceil(orders.length / PAGE_SIZE));
         } catch (error) {
-            console.error("Error fetching orders:", error);
+            console.error('Error fetching orders:', error);
+            toast.error("Có lỗi xảy ra khi tải đơn hàng. Vui lòng thử lại.");
+        } finally {
+            setLoading(false);
         }
-    }
+    };
+    useEffect(() => {
+            fetchOrders();
+    }, [selectedStatus]);
 
     useEffect(() => {
-        getUserOrders();
-    }, []);
+        if(currentPage > pageable){
+            fetchOrders();
+        }
+    }, [currentPage]);
 
     const handleOrderSelect = (order) => {
         setSelectedOrder(order);
@@ -40,6 +62,9 @@ const UserOrderPage = () => {
     const handleBackToList = () => {
         setSelectedOrder(null);
     }
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+    };
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -53,6 +78,13 @@ const UserOrderPage = () => {
                 <UserOrderList
                     orders={orders}
                     handleOrderSelect={handleOrderSelect}
+                    handlePageChange={handlePageChange}
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    isLoad={loading}
+                    selectedStatus={selectedStatus}
+                    setSelectedStatus={setSelectedStatus}
+                    pageSize={PAGE_SIZE}
                 />
             )}
         </div>

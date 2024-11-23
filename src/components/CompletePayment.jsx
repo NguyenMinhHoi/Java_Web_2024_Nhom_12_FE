@@ -35,7 +35,7 @@ const CompletePayment = ({ orders }) => {
         }
     };
 
-    const totalAmount = orders.reduce((sum, order) => sum + order.total, 0);
+    const totalAmount = orders.reduce((sum, order) => sum + parseFloat(order.total), 0);
 
     return (
         <div className="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto">
@@ -49,8 +49,8 @@ const CompletePayment = ({ orders }) => {
                     <h3 className="text-xl font-semibold mb-3">Thông tin đơn hàng #{index + 1}</h3>
                     <div className="bg-gray-100 p-4 rounded-lg">
                         <p><span className="font-medium">Mã đơn hàng:</span> #{order.id}</p>
-                        <p><span className="font-medium">Ngày đặt hàng:</span> {formatDate(order.date)}</p>
-                        <p><span className="font-medium">Cửa hàng:</span> {order.merchant.name}</p>
+                        <p><span className="font-medium">Ngày đặt hàng:</span> {formatDate(order.orderDate)}</p>
+                        <p><span className="font-medium">Cửa hàng:</span> {order.merchantName}</p>
                         <p><span className="font-medium">Trạng thái:</span> <span className={getStatusColor(order.status)}>{order.status}</span></p>
                         <p><span className="font-medium">Tổng cộng:</span> {order.total.toLocaleString()} VND</p>
                         <p><span className="font-medium">Phương thức thanh toán:</span> {getPaymentTypeText(order.paymentType)}</p>

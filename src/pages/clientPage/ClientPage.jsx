@@ -22,6 +22,7 @@ import Cart from "../../components/Cart";
 import CompletePayment from "../../components/CompletePayment";
 import CompletePaymentForm from "../../components/CompletePaymentForm";
 import PaymentPage from "../PaymentPage";
+import ProductListingPage from "./ProductListingPage";
 
 export default function ClientPage() {
 
@@ -38,6 +39,11 @@ export default function ClientPage() {
                          <UserProfile />
                      </div>
              }/>
+             <Route path='/products' element={
+                 <div className="pt-16">
+                     <ProductListingPage />
+                 </div>}>
+             </Route>
          </Route>
      </Routes>
   );

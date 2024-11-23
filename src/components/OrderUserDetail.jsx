@@ -16,8 +16,6 @@ const OrderUserDetail = ({ order, onBackClick }) => {
 
   const currentStatusIndex = statusSteps.indexOf(order.status);
 
-    console.log(order)
-
   return (
     <div className="bg-white shadow-lg rounded-lg p-6">
       <button 
@@ -27,9 +25,9 @@ const OrderUserDetail = ({ order, onBackClick }) => {
         <FiArrowLeft className="mr-2" />
         Quay lại danh sách đơn hàng
       </button>
-
+  
       <h2 className="text-2xl font-bold mb-4">Chi tiết đơn hàng #{order.id}</h2>
-
+  
       {/* Status Bar */}
       <div className="mb-8">
         <div className="flex justify-between mb-2">
@@ -52,7 +50,7 @@ const OrderUserDetail = ({ order, onBackClick }) => {
           ></div>
         </div>
       </div>
-
+  
       {/* Order Details */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div>
@@ -72,7 +70,7 @@ const OrderUserDetail = ({ order, onBackClick }) => {
           <p>{order.status}</p>
         </div>
       </div>
-
+  
       {/* Product List */}
       <div className="mt-6">
         <h3 className="text-xl font-semibold mb-3">Sản phẩm</h3>
@@ -91,6 +89,15 @@ const OrderUserDetail = ({ order, onBackClick }) => {
           </div>
         ))}
       </div>
+  
+      {order.status === 'SHIPPING' && (
+        <button 
+          onClick={() => {/* Handle received order */}}
+          className="mt-6 bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors duration-200"
+        >
+          Đã nhận được hàng
+        </button>
+      )}
     </div>
   );
 };

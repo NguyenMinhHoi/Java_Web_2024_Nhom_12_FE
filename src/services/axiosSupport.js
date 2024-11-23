@@ -256,10 +256,68 @@ class AxiosSupport {
         },id);
     }
 
-    async getOrdersByUserId(id) {
+    async getOrdersByUserId(id, page, size, status) {
         return this.fetchWithAuth('getOrdersByUserId', {
             method: 'GET',
+            params: {
+                status: status,
+                page: page,
+                size: size
+            }
         },id);
+    }
+
+    async getCategoriesByShop(id) {
+        return this.fetchWithAuth('getCategoriesByShop', {
+            method: 'GET',
+        },id);
+    }
+
+    async createShopSection(data) {
+        return this.fetchWithAuth('createShopSection', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    }
+
+    async updateShopSection(data) {
+        return this.fetchWithAuth('createShopSection', {
+            method: 'PUT',
+            body: JSON.stringify(data)
+        });
+    }
+
+    async deleteShopSection(id) {
+        return this.fetchWithAuth('deleteShopSection', {
+            method: 'DELETE',
+        },id);
+    }
+
+    async compareCountOrderWithPreviousMonth(id) {
+        return this.fetchWithAuth('compareCountOrderWithPreviousMonth', {
+            method: 'GET',
+        },id);
+    }
+    async getRevenueChart(id,time) {
+        return this.fetchWithAuth('getRevenueChart', {
+            method: 'GET',
+            params: {
+                time: time
+            }
+        },id);
+    }
+
+    async compareRevenueWithPreviousMonth(id) {
+        return this.fetchWithAuth('compareRevenueWithPreviousMonth', {
+            method: 'GET',
+        },id);
+    }
+
+    async updateOrder(data) {
+        return this.fetchWithAuth('updateOrder', {
+            method: 'PUT',
+            body: JSON.stringify(data)
+        });
     }
 
 }

@@ -1,25 +1,26 @@
 import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Bar } from 'react-chartjs-2';
 import { FiActivity, FiDollarSign, FiShoppingCart, FiUsers } from 'react-icons/fi';
+import {useSelector} from "react-redux";
+import useAxiosSupport from "../hooks/useAxiosSupport";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 // Dữ liệu mẫu cho biểu đồ
 const chartData = [
-
-    { name: 'Jan', value: 2800 },
-    { name: 'Feb', value: 2200 },
-    { name: 'Mar', value: 1800 },
-    { name: 'Apr', value: 2800 },
-    { name: 'May', value: 5900 },
-    { name: 'Jun', value: 2700 },
-    { name: 'Jul', value: 1600 },
-    { name: 'Aug', value: 5200 },
-    { name: 'Sep', value: 3700 },
-    { name: 'Oct', value: 3400 },
-    { name: 'Nov', value: 1400 },
-    { name: 'Dec', value: 5400 },
+    { name: 'T1', value: 2800 },
+    { name: 'T2', value: 2200 },
+    { name: 'T3', value: 1800 },
+    { name: 'T4', value: 2800 },
+    { name: 'T5', value: 5900 },
+    { name: 'T6', value: 2700 },
+    { name: 'T7', value: 1600 },
+    { name: 'T8', value: 5200 },
+    { name: 'T9', value: 3700 },
+    { name: 'T10', value: 3400 },
+    { name: 'T11', value: 1400 },
+    { name: 'T12', value: 5400 },
 ];
 
 const StatCard = ({ title, value, icon: Icon, change }) => (
@@ -44,23 +45,32 @@ const RecentSaleItem = ({ name, email, amount }) => (
                 <p className="text-xs text-gray-500">{email}</p>
             </div>
         </div>
-        <p className="font-medium text-sm text-gray-900">+${amount}</p>
+        <p className="font-medium text-sm text-gray-900">+{amount} đ</p>
     </div>
 );
 
-const ChartJSBarChart = ({ data }) => {
+const ChartJSBarChart = ({ currentData, previousData }) => {
     const chartData = {
-        labels: data.map(item => item.name),
+        labels: currentData.map(item => item.name),
         datasets: [
             {
-                label: 'Monthly Revenue',
-                data: data.map(item => item.value),
+                label: 'Doanh thu kỳ này',
+                data: currentData.map(item => item.value),
                 backgroundColor: 'rgba(59, 130, 246, 0.5)',
                 borderColor: 'rgb(59, 130, 246)',
                 borderWidth: 1,
                 borderRadius: 6,
                 borderSkipped: false,
             },
+            {
+                label: 'Doanh thu kỳ trước',
+                data: previousData.map(item => item.value),
+                backgroundColor: 'rgba(245, 158, 11, 0.5)',
+                borderColor: 'rgb(245, 158, 11)',
+                borderWidth: 1,
+                borderRadius: 6,
+                borderSkipped: false,
+            }
         ],
     };
 
@@ -77,7 +87,7 @@ const ChartJSBarChart = ({ data }) => {
             },
             title: {
                 display: true,
-                text: 'Monthly Revenue Overview',
+                text: 'So sánh doanh thu',
                 font: {
                     size: 16,
                     weight: 'bold'
@@ -90,7 +100,7 @@ const ChartJSBarChart = ({ data }) => {
                 borderColor: 'rgb(59, 130, 246)',
                 borderWidth: 1,
                 cornerRadius: 6,
-                displayColors: false,
+                displayColors: true,
             }
         },
         scales: {
@@ -111,36 +121,104 @@ const ChartJSBarChart = ({ data }) => {
     return <Bar data={chartData} options={options} />;
 };
 
+const TimeSelector = ({ selectedTime, onTimeChange }) => {
+    return (
+        <select
+            value={selectedTime}
+            onChange={(e) => onTimeChange(e.target.value)}
+            className="ml-4 p-2 border border-gray-300 rounded-md text-sm"
+        >
+            <option value="thisMonth">Tháng này</option>
+            <option value="lastMonth">Tháng trước</option>
+            <option value="lastQuarter">Quý trước</option>
+            <option value="lastYear">Năm trước</option>
+            <option value="thisYear">Năm nay</option>
+        </select>
+    );
+};
+
 export default function DashboardHome() {
+    const [selectedTime, setSelectedTime] = useState('thisMonth');
+    const [orderComparison, setOrderComparison] = useState(null);
+    const [revenueComparison, setCompareRevenueChange] = useState(null);
+    const [currentRevenueData, setCurrentRevenueData] = useState([]);
+    const [previousRevenueData, setPreviousRevenueData] = useState([]);
+    const axiosSupport = useAxiosSupport();
+    const {id:merchantId} = useSelector(state => state.merchant);
+
+    const handleTimeChange = (newTime) => {
+        setSelectedTime(newTime);
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const currentRevenueChartData = await axiosSupport.getRevenueChart(merchantId, selectedTime);
+                const formattedCurrentRevenueData = Object.entries(currentRevenueChartData).map(([key, value]) => ({
+                    name: `T${key}`,
+                    value: value
+                }));
+                setCurrentRevenueData(formattedCurrentRevenueData);
+
+                // Fetch previous period data
+                const previousPeriod = getPreviousPeriod(selectedTime);
+                const previousRevenueChartData = await axiosSupport.getRevenueChart(merchantId, previousPeriod);
+                const formattedPreviousRevenueData = Object.entries(previousRevenueChartData).map(([key, value]) => ({
+                    name: `T${key}`,
+                    value: value
+                }));
+                setPreviousRevenueData(formattedPreviousRevenueData);
+
+                const orderComparisonData = await axiosSupport.compareCountOrderWithPreviousMonth(merchantId);
+                setOrderComparison(orderComparisonData);
+
+                const compareRevenueChange = await axiosSupport.compareRevenueWithPreviousMonth(merchantId);
+                setCompareRevenueChange(compareRevenueChange)
+            } catch (error) {
+                console.error("Error fetching dashboard data:", error);
+            }
+        };
+
+        fetchData();
+    }, [merchantId, selectedTime]);
+
+    const getPreviousPeriod = (currentPeriod) => {
+        switch (currentPeriod) {
+            case 'thisMonth':
+                return 'lastMonth';
+            case 'lastMonth':
+                return 'lastQuarter';
+            case 'lastQuarter':
+                return 'lastYear';
+            case 'lastYear':
+            case 'thisYear':
+                return 'lastYear';
+            default:
+                return 'lastMonth';
+        }
+    };
+
+
     return (
         <div className="p-6 bg-gray-50 min-h-screen rounded-md">
             <div className="mb-8">
-                <h1 className="text-2xl font-semibold text-gray-900 mb-2">Overview</h1>
+                <h1 className="text-2xl font-semibold text-gray-900 mb-2">Tổng quan</h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <StatCard title="Total Revenue" value="$45,231.89" icon={FiDollarSign} change="+20.1% from last month" />
-                    <StatCard title="Subscriptions" value="+2350" icon={FiUsers} change="+180.1% from last month" />
-                    <StatCard title="Sales" value="+12,234" icon={FiShoppingCart} change="+19% from last month" />
-                    <StatCard title="Active Now" value="+573" icon={FiActivity} change="+201 since last hour" />
+                    <StatCard title="Tổng doanh thu" value={`${revenueComparison?.currentMonthRevenue.toFixed(2) || 0} đ`} icon={FiDollarSign} change={`${revenueComparison?.percentageChange.toFixed(2) || 0}% so với tháng trước`} />
+                    <StatCard title="Người theo dõi" value="+2350" icon={FiUsers} change="+180,1% so với tháng trước" />
+                    <StatCard title="Đơn hàng" value={`+${orderComparison?.currentMonthOrderCount.toFixed(0) || 0}`} icon={FiShoppingCart} change={`${orderComparison?.percentageChange.toFixed(2) || 0}% so với tháng trước`} />
+                    <StatCard title="Đang hoạt động" value="+573" icon={FiActivity} change="+201 so với giờ trước" />
                 </div>
             </div>
-
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-sm">
-                    <h2 className="text-lg font-semibold text-gray-900 mb-4">Overview</h2>
-                    <ChartJSBarChart data={chartData} />
-                </div>
-
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Sales</h2>
-                    <p className="text-sm text-gray-500 mb-4">You made 265 sales this month.</p>
-                    <div className="space-y-4">
-                        <RecentSaleItem name="Olivia Martin" email="olivia.martin@email.com" amount="1,999.00" />
-                        <RecentSaleItem name="Jackson Lee" email="jackson.lee@email.com" amount="39.00" />
-                        <RecentSaleItem name="Isabella Nguyen" email="isabella.nguyen@email.com" amount="299.00" />
-                        <RecentSaleItem name="William Kim" email="will@email.com" amount="99.00" />
-                        <RecentSaleItem name="Sofia Davis" email="sofia.davis@email.com" amount="39.00" />
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-lg font-semibold text-gray-900">Tổng quan</h2>
+                        <TimeSelector selectedTime={selectedTime} onTimeChange={handleTimeChange}/>
                     </div>
+                    <ChartJSBarChart currentData={currentRevenueData} previousData={previousRevenueData}/>
                 </div>
+                {/* Rest of the component remains the same */}
             </div>
         </div>
     );

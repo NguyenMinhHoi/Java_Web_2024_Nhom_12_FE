@@ -51,7 +51,7 @@ export default function DashboardHeader({ currentUser, onLogout, onMenuClick }) 
                     <Link to="/dashboard/home" className="text-sm font-medium text-gray-500 hover:text-gray-700">Trang chủ</Link>
                     <Link to="/dashboard/order" className="text-sm font-medium text-gray-500 hover:text-gray-700">Đơn hàng</Link>
                     <Link to="/dashboard/product" className="text-sm font-medium text-gray-500 hover:text-gray-700">Sản phẩm</Link>
-                    <Link to="/dashboard/users" className="text-sm font-medium text-gray-500 hover:text-gray-700">Người dùng</Link>
+                    <Link to="/dashboard/shopsection" className="text-sm font-medium text-gray-500 hover:text-gray-700">Danh mục</Link>
                 </nav>
             </div>
             <div className="flex items-center space-x-4">

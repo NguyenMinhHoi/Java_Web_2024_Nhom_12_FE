@@ -25,6 +25,13 @@ const urlManager = {
       getOrdersByShopId: `/orders/merchant`,
       getOrderById: (id)=> `/orders/${id}`,
       getOrdersByUserId: (id)=> `/orders/user/${id}`,
+      getCategoriesByShop: (id)=> `/shopsections/all/${id}`,
+      createShopSection: "/shopsections",
+      deleteShopSection: (id)=> `/merchants/shopsections/${id}`,
+      compareCountOrderWithPreviousMonth:(id) =>`/merchants/compare-order/${id}`,
+      getRevenueChart: (id)=> `/merchants/revenue-chart/${id}`,
+      compareRevenueWithPreviousMonth : (id) => `/merchants/compare-revenue/${id}`,
+      updateOrder : (id) => `/orders/status`,
 };
 
 export default urlManager;

@@ -162,18 +162,28 @@ const ProductDetailAdmin = ({ product, onEdit, onDelete }) => {
                 <div className={`w-full ${editedVariants.length === 1 ? 'max-w-2xl bg-white rounded-lg shadow-md' : 'md:w-1/2'} p-4`}>
                     <div>
                         <div>
-                            <button
-                                onClick={() => onEdit(product)}
-                                className="text-blue-500 hover:text-blue-700 mr-2"
-                            >
-                                <FiEdit size={20}/>
-                            </button>
-                            <button
-                                onClick={() => onDelete(product.id)}
-                                className="text-red-500 hover:text-red-700"
-                            >
-                                <FiTrash size={20}/>
-                            </button>
+                            {isEditing ?
+                                <button
+                                    onClick={() => handleSaveClick()}
+                                    className="text-blue-500 hover:text-blue-700 mr-2"
+                                >
+                                    <FiSave size={20}/>
+                                </button> :
+                                <>
+                                    <button
+                                        onClick={() => handleEditClick()}
+                                        className="text-blue-500 hover:text-blue-700 mr-2"
+                                    >
+                                        <FiEdit size={20}/>
+                                    </button>
+                                    <button
+                                        onClick={() => onDelete(product.id)}
+                                        className="text-red-500 hover:text-red-700"
+                                    >
+                                        <FiTrash size={20}/>
+                                    </button>
+                                </>
+                            }
                         </div>
                     </div>
                     <div className="flex flex-col md:flex-row md:w-full">
@@ -183,7 +193,7 @@ const ProductDetailAdmin = ({ product, onEdit, onDelete }) => {
                             </div>
                             <div className="relative w-full h-[33vh] mb-4">
                                 <div className="absolute inset-0 w-full h-full">
-                                    {product.image && product.image.length > 0 ? (
+                                {product.image && product.image.length > 0 ? (
                                         <>
                                             {transitions((style, index) => (
                                                 <animated.img
@@ -259,84 +269,79 @@ const ProductDetailAdmin = ({ product, onEdit, onDelete }) => {
 
                             <div className="w-full md:w-1/2 p-4">
                                 <Modal isOpen={isAddingGroupOption} onClose={() => setIsAddingGroupOption(false)}>
-                                    <div className="bg-white rounded-lg p-6 max-w-md w-full mx-auto">
-                                        <h5 className="font-semibold text-xl mb-6 text-gray-800 text-center">Thêm Nhóm
-                                            Tùy Chọn Mới</h5>
-                                        <input
-                                            type="text"
-                                            value={newGroupOption.name}
-                                            onChange={(e) => setNewGroupOption({
-                                                ...newGroupOption,
-                                                name: e.target.value
-                                            })}
-                                            placeholder="Tên Nhóm Tùy Chọn"
-                                            className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
-                                        />
-                                        <table className="w-full mb-4">
-                                            <thead>
-                                            <tr>
-                                                <th className="px-2 py-1 text-left text-xs font-semibold text-gray-600">STT</th>
-                                                <th className="px-2 py-1 text-left text-xs font-semibold text-gray-600">Tùy
-                                                    chọn
-                                                </th>
-                                                <th className="px-2 py-1 text-left text-xs font-semibold text-gray-600">Hành
-                                                    động
-                                                </th>
+                                    <h5 className="font-semibold text-xl mb-6 text-gray-800 text-center">Thêm Nhóm Tùy Chọn Mới</h5>
+                                    <input
+                                        type="text"
+                                        value={newGroupOption.name}
+                                        onChange={(e) => setNewGroupOption({
+                                            ...newGroupOption,
+                                            name: e.target.value
+                                        })}
+                                        placeholder="Tên Nhóm Tùy Chọn"
+                                        className="w-full p-2 mb-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                                    />
+                                    <table className="w-full mb-4">
+                                        <thead>
+                                        <tr>
+                                            <th className="px-2 py-1 text-left text-xs font-semibold text-gray-600">STT</th>
+                                            <th className="px-2 py-1 text-left text-xs font-semibold text-gray-600">Tùy chọn</th>
+                                            <th className="px-2 py-1 text-left text-xs font-semibold text-gray-600">Hành động</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {newGroupOption.options.map((option, index) => (
+                                            <tr key={index} className="border-t border-gray-200">
+                                                <td className="px-2 py-1 text-sm text-gray-600">{index + 1}</td>
+                                                <td className="px-2 py-1">
+                                                    <input
+                                                        type="text"
+                                                        value={option.name}
+                                                        onChange={(e) => handleOptionChange(index, e.target.value)}
+                                                        placeholder={`Tùy chọn ${index + 1}`}
+                                                        className="w-full p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+                                                    />
+                                                </td>
+                                                <td className="px-2 py-1 justify-center flex">
+                                                    <button
+                                                        onClick={() => removeOption(index)}
+                                                        className="text-red-500 hover:text-red-700 transition duration-300"
+                                                    >
+                                                        <FiX size={20}/>
+                                                    </button>
+                                                </td>
                                             </tr>
-                                            </thead>
-                                            <tbody>
-                                            {newGroupOption.options.map((option, index) => (
-                                                <tr key={index} className="border-t border-gray-200">
-                                                    <td className="px-2 py-1 text-sm text-gray-600">{index + 1}</td>
-                                                    <td className="px-2 py-1">
-                                                        <input
-                                                            type="text"
-                                                            value={option.name}
-                                                            onChange={(e) => handleOptionChange(index, e.target.value)}
-                                                            placeholder={`Tùy chọn ${index + 1}`}
-                                                            className="w-full p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
-                                                        />
-                                                    </td>
-                                                    <td className="px-2 py-1 justify-center flex">
-                                                        <button
-                                                            onClick={() => removeOption(index)}
-                                                            className="text-red-500 hover:text-red-700 transition duration-300"
-                                                        >
-                                                            <FiX size={20}/>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                            </tbody>
-                                        </table>
-                                        <div className="flex justify-between items-center mt-4">
+                                        ))}
+                                        </tbody>
+                                    </table>
+                                    <div className="flex justify-between items-center mt-4">
+                                        <button
+                                            onClick={addOption}
+                                            className="text-base bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300 ease-in-out flex items-center"
+                                        >
+                                            <FiPlus className="mr-2" size={18}/> Thêm
+                                        </button>
+                                        <div className="flex space-x-3">
                                             <button
-                                                onClick={addOption}
-                                                className="text-base bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300 ease-in-out flex items-center"
+                                                onClick={() => setIsAddingGroupOption(false)}
+                                                className="text-base bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition duration-300 ease-in-out"
                                             >
-                                                <FiPlus className="mr-2" size={18}/> Thêm
+                                                Hủy
                                             </button>
-                                            <div className="flex space-x-3">
-                                                <button
-                                                    onClick={() => setIsAddingGroupOption(false)}
-                                                    className="text-base bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition duration-300 ease-in-out"
-                                                >
-                                                    Hủy
-                                                </button>
-                                                <button
-                                                    onClick={saveGroupOption}
-                                                    className="text-base bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 ease-in-out"
-                                                >
-                                                    Lưu
-                                                </button>
-                                            </div>
+                                            <button
+                                                onClick={saveGroupOption}
+                                                className="text-base bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 ease-in-out"
+                                            >
+                                                Lưu
+                                            </button>
                                         </div>
                                     </div>
                                 </Modal>
                             </div>
                         </div>
                     </div>
-                    <p className="text-sm text-gray-600 mb-4">{product.description}</p>
+                    <p className="text-sm text-gray-600 mb-4">
+                        { product.description}
+                    </p>
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <p className="text-sm font-semibold">ID:</p>
@@ -352,15 +357,68 @@ const ProductDetailAdmin = ({ product, onEdit, onDelete }) => {
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <p className="text-sm font-semibold">Số lượng:</p>
-                                    <p className="text-sm text-gray-600">{editedVariants[0].quantity}</p>
+                                    {isEditing ? (
+                                        <input
+                                            type="number"
+                                            className="w-full p-2 border rounded-md"
+                                            value={editedVariants[0].quantity}
+                                            onChange={(e) => setEditedVariants([{
+                                                ...editedVariants[0],
+                                                quantity: e.target.value
+                                            }])}
+                                        />
+                                    ) : (
+                                        <p className="text-sm text-gray-600">{editedVariants[0].quantity}</p>
+                                    )}
                                 </div>
                                 <div>
                                     <p className="text-sm font-semibold">Giá:</p>
-                                    <p className="text-sm text-gray-600">{editedVariants[0].price}</p>
+                                    {isEditing ? (
+                                        <input
+                                            type="number"
+                                            className="w-full p-2 border rounded-md"
+                                            value={editedVariants[0].price}
+                                            onChange={(e) => setEditedVariants([{
+                                                ...editedVariants[0],
+                                                price: e.target.value
+                                            }])}
+                                        />
+                                    ) : (
+                                        <p className="text-sm text-gray-600">{editedVariants[0].price}</p>
+                                    )}
+                                </div>
+
+                                <div>
+                                    <p className="text-sm font-semibold">Giá giảm:</p>
+                                    {isEditing ? (
+                                        <input
+                                            type="number"
+                                            className="w-full p-2 border rounded-md"
+                                            value={editedVariants[0].salePrice}
+                                            onChange={(e) => setEditedVariants([{
+                                                ...editedVariants[0],
+                                                salePrice: e.target.value
+                                            }])}
+                                        />
+                                    ) : (
+                                        <p className="text-sm text-gray-600">{editedVariants[0].salePrice}</p>
+                                    )}
                                 </div>
                                 <div>
                                     <p className="text-sm font-semibold">Tồn kho:</p>
-                                    <p className="text-sm text-gray-600">{editedVariants[0].stock}</p>
+                                    {isEditing ? (
+                                        <input
+                                            type="number"
+                                            className="w-full p-2 border rounded-md"
+                                            value={editedVariants[0].stock}
+                                            onChange={(e) => setEditedVariants([{
+                                                ...editedVariants[0],
+                                                stock: e.target.value
+                                            }])}
+                                        />
+                                    ) : (
+                                        <p className="text-sm text-gray-600">{editedVariants[0].stock}</p>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -372,7 +430,8 @@ const ProductDetailAdmin = ({ product, onEdit, onDelete }) => {
                             <h4 className="text-lg font-semibold">Biến thể sản phẩm</h4>
                             {isEditing ? (
                                 <div>
-                                    <button onClick={handleSaveClick} className="text-green-500 hover:text-green-700 mr-2">
+                                    <button onClick={handleSaveClick}
+                                            className="text-green-500 hover:text-green-700 mr-2">
                                         <FiSave size={20}/>
                                     </button>
                                     <button onClick={handleCancelClick} className="text-red-500 hover:text-red-700">
@@ -404,12 +463,15 @@ const ProductDetailAdmin = ({ product, onEdit, onDelete }) => {
                                                 Giá
                                             </th>
                                             <th className="px-2 md:px-4 py-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Giá giảm
+                                            </th>
+                                            <th className="px-2 md:px-4 py-2 text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 Đã bán
                                             </th>
                                         </tr>
                                         </thead>
                                         <tbody className="bg-white divide-y divide-gray-200">
-                                            {currentVariants.map((variant, index) => (
+                                        {currentVariants.map((variant, index) => (
                                                 <tr key={index}>
                                                     <td className="px-2 md:px-4 py-4 whitespace-nowrap">
                                                         <div className="flex items-center justify-center">
@@ -426,7 +488,7 @@ const ProductDetailAdmin = ({ product, onEdit, onDelete }) => {
                                                                         htmlFor={`file-upload-${index}`}
                                                                         className="cursor-pointer flex items-center justify-center w-full h-full bg-gray-200 rounded-md hover:bg-gray-300 transition-colors duration-200"
                                                                     >
-                                                                        <FiPlus className="text-gray-600" size={24} />
+                                                                        <FiPlus className="text-gray-600" size={24}/>
                                                                     </label>
                                                                     {variant.image && (
                                                                         <>
@@ -435,7 +497,8 @@ const ProductDetailAdmin = ({ product, onEdit, onDelete }) => {
                                                                                 alt={`Variant ${index + 1}`}
                                                                                 className="absolute top-0 left-0 w-full h-full object-cover rounded-md"
                                                                             />
-                                                                            <div className="absolute top-0 right-0 hidden group-hover:block">
+                                                                            <div
+                                                                                className="absolute top-0 right-0 hidden group-hover:block">
                                                                                 <button
                                                                                     onClick={(e) => {
                                                                                         e.preventDefault();
@@ -443,7 +506,7 @@ const ProductDetailAdmin = ({ product, onEdit, onDelete }) => {
                                                                                     }}
                                                                                     className="bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors duration-200"
                                                                                 >
-                                                                                    <FiX size={16} />
+                                                                                    <FiX size={16}/>
                                                                                 </button>
                                                                             </div>
                                                                         </>
@@ -459,12 +522,14 @@ const ProductDetailAdmin = ({ product, onEdit, onDelete }) => {
                                                         </div>
                                                     </td>
                                                     <td className="px-2 md:px-4 py-4 whitespace-nowrap">
-                                                        <div className="flex items-center justify-center text-xs md:text-sm text-gray-900">
+                                                        <div
+                                                            className="flex items-center justify-center text-xs md:text-sm text-gray-900">
                                                             {variant.options.map(option => option.name).join(', ')}
                                                         </div>
                                                     </td>
                                                     <td className="px-2 md:px-4 py-4 whitespace-nowrap">
-                                                        <div className="flex items-center justify-center text-xs md:text-sm text-gray-900">
+                                                        <div
+                                                            className="flex items-center justify-center text-xs md:text-sm text-gray-900">
                                                             {isEditing ? (
                                                                 <input
                                                                     type="number"
@@ -478,7 +543,8 @@ const ProductDetailAdmin = ({ product, onEdit, onDelete }) => {
                                                         </div>
                                                     </td>
                                                     <td className="px-2 md:px-4 py-4 whitespace-nowrap">
-                                                        <div className="flex items-center justify-center text-xs md:text-sm text-gray-900">
+                                                        <div
+                                                            className="flex items-center justify-center text-xs md:text-sm text-gray-900">
                                                             {isEditing ? (
                                                                 <input
                                                                     type="number"
@@ -487,12 +553,34 @@ const ProductDetailAdmin = ({ product, onEdit, onDelete }) => {
                                                                     className="w-full p-1 border rounded text-center"
                                                                 />
                                                             ) : (
-                                                                variant.price && variant.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })
+                                                                variant.price && variant.price.toLocaleString('vi-VN', {
+                                                                    style: 'currency',
+                                                                    currency: 'VND'
+                                                                })
                                                             )}
                                                         </div>
                                                     </td>
                                                     <td className="px-2 md:px-4 py-4 whitespace-nowrap">
-                                                        <div className="flex items-center justify-center text-xs md:text-sm text-gray-900">
+                                                        <div
+                                                            className="flex items-center justify-center text-xs md:text-sm text-gray-900">
+                                                            {isEditing ? (
+                                                                <input
+                                                                    type="number"
+                                                                    value={variant.salePrice || ""}
+                                                                    onChange={(e) => handleVariantChange(index, 'salePrice', e.target.value)}
+                                                                    className="w-full p-1 border rounded text-center"
+                                                                />
+                                                            ) : (
+                                                                variant.salePrice && variant.salePrice.toLocaleString('vi-VN', {
+                                                                    style: 'currency',
+                                                                    currency: 'VND'
+                                                                })
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-2 md:px-4 py-4 whitespace-nowrap">
+                                                        <div
+                                                            className="flex items-center justify-center text-xs md:text-sm text-gray-900">
                                                             {isEditing ? (
                                                                 <input
                                                                     type="number"

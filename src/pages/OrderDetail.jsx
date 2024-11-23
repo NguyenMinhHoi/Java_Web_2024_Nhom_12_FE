@@ -8,11 +8,12 @@ const OrderDetail = () => {
     const navigate = useNavigate();
     const axiosSupport = useAxiosSupport();
     const [order, setOrder] = useState(null);
+    const fetchData = async () => {
+        const response = await axiosSupport.getOrderById(id);
+        setOrder(response);
+    }
     useEffect( () => {
-         const fetchData = async () => {
-             const response = await axiosSupport.getOrderById(id);
-             setOrder(response);
-         }
+
          fetchData()
     },[id])
 
@@ -44,18 +45,20 @@ const OrderDetail = () => {
                         <div className="space-x-2">
                             <button
                                 className={`font-bold py-2 px-4 rounded transition duration-300 ${
-                                    order?.status === "PENDING"
+                                    order?.status === "PENDING" || order?.status === "DOING"
                                         ? "bg-white text-blue-600 hover:bg-blue-100"
                                         : "bg-gray-300 text-gray-500 cursor-not-allowed"
                                 }`}
-                                onClick={() => {
-                                    if (order?.status === "PENDING") {
-                                        // Handle order acceptance
+                                onClick={async () => {
+                                    if (order?.status === "PENDING" || order?.status === "DOING") {
+                                        await axiosSupport.updateOrder([order.id])
+                                        fetchData();
                                     }
                                 }}
-                                disabled={order?.status !== "PENDING"}
+                                disabled={order?.status !== "PENDING" && order?.status !== "DOING"}
                             >
-                                Nhận đơn hàng
+                                {order?.status === "PENDING" && "Nhận đơn hàng"}
+                                {order?.status !== "PENDING" && "Đã gửi hàng"}
                             </button>
                             <button
                                 className={`font-bold py-2 px-4 rounded transition duration-300 ${

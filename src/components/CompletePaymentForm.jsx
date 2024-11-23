@@ -9,6 +9,7 @@ import {setAddressUser} from "../redux/reducers/userReducer";
 import CompletePayment from "./CompletePayment";
 import {toast} from "react-toastify";
 import Modal from "./Modal";
+import websocketConfig from "../config/websocketConfig";
 
 const CompletePaymentForm = ({selectedVariants, total, onSubmit}) => {
     const axiosSupport = useAxiosSupport();
@@ -83,7 +84,6 @@ const CompletePaymentForm = ({selectedVariants, total, onSubmit}) => {
     };
 
     const prepareOrderData = (values) => {
-        console.log(values)
         const orderData = {
             variants: selectedVariants,
             merchantNumber: groupSize, // Assuming all products are from the same merchant
@@ -100,14 +100,22 @@ const CompletePaymentForm = ({selectedVariants, total, onSubmit}) => {
         return orderData;
     };
 
+    useEffect(() => {
+        websocketConfig.connect(user.id, {
+            onOrderReceived: (newOrder) => {
+                setOrderData(prevOrders => prevOrders ? [...prevOrders, newOrder] : [newOrder]);
+                toast.success('Đơn hàng đã được gửi đến kho hàng');
+            }
+        });
+
+        return () => {
+            websocketConfig.disconnect();
+        };
+    }, [user.id]);
+
     const handleSubmit = async (values) => {
         try {
             const data = await axiosSupport.createOrder(prepareOrderData(values));
-            if(data){
-                setOrderData(data)
-                toast.success('Tạo đơn hàng thành công!');
-            } else
-                toast.error('Đã xảy ra lỗi khi tạo đơn hàng. Vui lòng thử lại sau.');
         } catch (error) {
             console.error('Error creating order:', error);
         } finally {

@@ -6,16 +6,20 @@ import {useNavigate} from "react-router-dom";
 import {setOrderPage} from "../redux/reducers/commonReducer";
 import Modal from "../components/Modal";
 import QuickApprovalInput from "../components/QuickApprovalInput";
+import websocketConfig from "../config/websocketConfig";
 const OrderDashboard = () => {
-    const state = useSelector(state => state);
-    console.log(state)
-    const [orders, setOrders] = useState([]);
+    const orderInit = useSelector(state => state.merchant.orders);
+
+    const [orders, setOrders] = useState(orderInit || []);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('ALL');
     const [currentPage, setCurrentPage] = useState(1 );
     const [ordersPerPage] = useState(10);
+    const [newOrderIds, setNewOrderIds] = useState(new Set());
+
     const axiosSupport = useAxiosSupport();
     const merchant = useSelector(state => state.merchant);
+    const user = useSelector(state => state.user);
     const [maxPage, setMaxPage] = useState(1);
     const navigate = useNavigate();
 
@@ -58,6 +62,48 @@ const OrderDashboard = () => {
         closeModal();
     };
 
+    const onOrderReceived = (newOrder) => {
+        setOrders(prevOrders => {
+            const updatedOrders = [newOrder, ...prevOrders];
+            return updatedOrders.filter((order, index, self) =>
+                index === self.findIndex((t) => t.id === order.id)
+            );
+        });
+    };
+
+
+    useEffect(() => {
+        websocketConfig.connect(user.id, {
+            onOrderReceived: (newOrder) => {
+                const transformedOrder = {
+                    id: parseInt(newOrder.id),
+                    customerName: newOrder.customerName || "Khách vãng lai",
+                    orderDate: newOrder.orderDate,
+                    totalAmount: parseFloat(newOrder.total),
+                    status: newOrder.status
+                };
+                setOrders(prevOrders => {
+                    const updatedOrders = [transformedOrder, ...prevOrders];
+                    return updatedOrders.filter((order, index, self) =>
+                        index === self.findIndex((t) => t.id === order.id)
+                    );
+                });
+                setNewOrderIds(prev => new Set(prev).add(transformedOrder.id));
+                setTimeout(() => {
+                    setNewOrderIds(prev => {
+                        const updated = new Set(prev);
+                        updated.delete(transformedOrder.id);
+                        return updated;
+                    });
+                }, 1000);
+            }
+        });
+
+        return () => {
+            websocketConfig.disconnect();
+        };
+    }, [user.id]);
+
     useEffect(() => {
             fetchOrders(currentPage);
     }, []);
@@ -67,7 +113,7 @@ const OrderDashboard = () => {
             const response = await axiosSupport.getOrdersByShopId(merchant.id, pageNumber-1, ordersPerPage);
             const transformedOrders = response.map(order => ({
                 id: parseInt(order.id),
-                customerName: order.name || "Khách vãng lai",
+                customerName: order.customerName || "Khách vãng lai",
                 orderDate: order.orderDate,
                 totalAmount: parseFloat(order.total),
                 status: order.status
@@ -152,10 +198,9 @@ const OrderDashboard = () => {
                                     >
                                         <option value="ALL">Tất cả trạng thái</option>
                                         <option value="PENDING">Chờ xử lý</option>
-                                        <option value="PROCESSING">Đang xử lý</option>
-                                        <option value="SHIPPED">Đã gửi hàng</option>
-                                        <option value="DELIVERED">Đã giao hàng</option>
-                                        <option value="CANCELLED">Đã hủy</option>
+                                        <option value="DOING">Đang xử lý</option>
+                                        <option value="SHIPPING">Đã gửi hàng</option>
+                                        <option value="CANCEL">Đã hủy</option>
                                     </select>
                                 </div>
                                 <div className="flex space-x-2">
@@ -193,7 +238,7 @@ const OrderDashboard = () => {
                             {currentOrders.map((order) => (
                                 <tr
                                     key={order.id}
-                                    className="hover:bg-gray-100 transition-colors duration-200 ease-in-out cursor-pointer"
+                                    className={`transition-all duration-500 ${newOrderIds.has(order.id) ? 'flash-blue-animation' : ''}`}
                                     onClick={() => navigate(`/dashboard/merchant/order/${order.id}`)}
                                 >
                                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 hover:text-blue-600">#{order.id}</td>
@@ -207,12 +252,18 @@ const OrderDashboard = () => {
                                     <td className="px-4 py-4 whitespace-nowrap">
                                         <span
                                             className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                                order.status === 'DELIVERED' ? 'bg-green-100 text-green-800 hover:bg-green-200' :
-                                                order.status === 'CANCELLED' ? 'bg-red-100 text-red-800 hover:bg-red-200' :
-                                                'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
+                                                order.status === 'DONE' ? 'bg-green-100 text-green-800 hover:bg-green-200' :
+                                                    order.status === 'SHPPING' ? 'bg-blue-100 text-blue-800 hover:bg-blue-200' :
+                                                        order.status === 'DOING' ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200' :
+                                                            order.status === 'PENDING' ? 'bg-gray-100 text-gray-800 hover:bg-gray-200' :
+                                                                'bg-gray-100 text-gray-800 hover:bg-gray-200'
                                             } transition-colors duration-200 ease-in-out`}
                                         >
-                                            {order.status}
+                                            {order.status === 'PENDING' && 'Chờ xử lý'}
+                                            {order.status === 'DOING' && 'Đang xử lý'}
+                                            {order.status === 'SHIPPING' && 'Đang giao hàng'}
+                                            {order.status === 'DONE' && 'Hoàn thành'}
+                                            {!['PENDING', 'DOING', 'SHIPPING', 'DONE'].includes(order.status) && order.status}
                                         </span>
                                     </td>
                                 </tr>
