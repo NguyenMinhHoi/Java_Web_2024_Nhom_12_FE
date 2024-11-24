@@ -320,6 +320,17 @@ class AxiosSupport {
         });
     }
 
+    async filterProducts(data,page,size) {
+        return this.fetchWithAuth('filterProduct', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            params: {
+                page: page,
+                size: size
+            }
+        });
+    }
+
 }
 
 export default AxiosSupport;

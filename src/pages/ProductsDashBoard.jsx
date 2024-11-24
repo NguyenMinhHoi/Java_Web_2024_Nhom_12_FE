@@ -11,8 +11,7 @@ import AddProductForm from "../components/AddProductForm";
 import {useNavigate} from "react-router-dom";
 import useAxiosSupport from "../hooks/useAxiosSupport";
 import ProductDetailAdmin from "../components/ProductDetailAdmin";
-// Import AxiosSupport
-// =====end=====
+
 const axios = new AxiosSupport(); // Khởi tạo AxiosSupport
 
 export default function ProductsDashBoard() {

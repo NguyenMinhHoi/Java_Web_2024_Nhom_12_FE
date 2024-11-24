@@ -204,9 +204,9 @@ export default function DashboardHome() {
             <div className="mb-8">
                 <h1 className="text-2xl font-semibold text-gray-900 mb-2">Tổng quan</h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <StatCard title="Tổng doanh thu" value={`${revenueComparison?.currentMonthRevenue.toFixed(2) || 0} đ`} icon={FiDollarSign} change={`${revenueComparison?.percentageChange.toFixed(2) || 0}% so với tháng trước`} />
+                    <StatCard title="Tổng doanh thu" value={`${revenueComparison?.currentMonthRevenue && revenueComparison?.currentMonthRevenue.toFixed(2) || 0} đ`} icon={FiDollarSign} change={`${revenueComparison?.percentageChange && revenueComparison?.percentageChange.toFixed(2) || 0}% so với tháng trước`} />
                     <StatCard title="Người theo dõi" value="+2350" icon={FiUsers} change="+180,1% so với tháng trước" />
-                    <StatCard title="Đơn hàng" value={`+${orderComparison?.currentMonthOrderCount.toFixed(0) || 0}`} icon={FiShoppingCart} change={`${orderComparison?.percentageChange.toFixed(2) || 0}% so với tháng trước`} />
+                    <StatCard title="Đơn hàng" value={`+${orderComparison?.currentMonthOrderCount && orderComparison?.currentMonthOrderCount.toFixed(0) || 0}`} icon={FiShoppingCart} change={`${orderComparison?.percentageChange && orderComparison?.percentageChange.toFixed(2) || 0}% so với tháng trước`} />
                     <StatCard title="Đang hoạt động" value="+573" icon={FiActivity} change="+201 so với giờ trước" />
                 </div>
             </div>

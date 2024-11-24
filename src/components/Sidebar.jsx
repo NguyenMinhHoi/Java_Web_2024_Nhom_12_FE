@@ -9,8 +9,8 @@ export default function Sidebar({ isOpen, onClose }) {
   const navItems = [
     { to: '/dashboard/home', label: 'Trang chủ', icon: Home },
     { to: '/dashboard/categories', label: 'Danh mục', icon: FolderKanban },
-    { to: '/dashboard/documents', label: 'Tài liệu', icon: FileText },
-    { to: '/dashboard/users', label: 'Người dùng', icon: Users },
+    { to: '/dashboard/products', label: 'Sản phẩm', icon: FileText },
+    { to: '/dashboard/orders', label: "Đơn hàng", icon: Users },
   ];
 
   const renderNavItem = (item) => {

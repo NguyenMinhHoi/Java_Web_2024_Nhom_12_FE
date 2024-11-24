@@ -32,6 +32,7 @@ const urlManager = {
       getRevenueChart: (id)=> `/merchants/revenue-chart/${id}`,
       compareRevenueWithPreviousMonth : (id) => `/merchants/compare-revenue/${id}`,
       updateOrder : (id) => `/orders/status`,
+      filterProduct: `/products/filter`
 };
 
 export default urlManager;
