@@ -94,7 +94,7 @@ export default function ProductsDashBoard() {
                             <div className="relative flex items-center w-4/5">
                                 <input
                                     type="text"
-                                    placeholder="Tìm kiếm sách..."
+                                    placeholder="Tìm kiếm sản phẩm..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     className="w-full bg-white border border-gray-300 rounded-md py-2 pl-3 pr-4 text-gray-700 placeholder-gray-500"

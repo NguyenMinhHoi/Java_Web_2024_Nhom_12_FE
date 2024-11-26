@@ -29,9 +29,9 @@ const UserOrderPage = () => {
                 orderDate: new Date(order.orderDate).toISOString(),
                 totalAmount: order.total,
                 products: order.variants.map(variant => ({
-                    name: variant.product.name,
-                    image: variant.image.path,
-                    quantity: variant.quantity
+                    name: variant?.product?.name,
+                    image: variant?.image?.path || '',
+                    quantity: variant?.quantity
                 }))
             }));
             const uniqueOrders = [...new Map([...orders, ...formattedOrders].map(order => [order.id, order])).values()];
