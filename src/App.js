@@ -19,6 +19,7 @@ import Cart from "./components/Cart";
 import PaymentPage from "./pages/PaymentPage";
 import ShopDetail from "./components/ShopDetail";
 import UserProfile from "./components/UserProfile";
+import DashboardAdminHome from "./components/admin/DashboardAdminHome";
 
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
                                </ProtectedRoute>
                           }
                       />
+                      <Route path="/admin" element={<DashboardAdminHome />}/>
                   </Routes>
               </PersistGate>
           </Provider>

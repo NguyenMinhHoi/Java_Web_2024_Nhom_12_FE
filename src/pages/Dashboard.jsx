@@ -11,6 +11,7 @@ import websocketConfig from "../config/websocketConfig";
 import {useDispatch, useSelector} from "react-redux";
 import {setOrder} from "../redux/reducers/merchantReducer";
 import CategoryManagement from "../components/CategoryManagement";
+import CouponsDashboard from "./CouponsDashboard";
 
 export default function Dashboard() {
     const currentUser = {
@@ -34,6 +35,7 @@ export default function Dashboard() {
                 <Route path="/merchant/order/:id" element={<OrderDetail/>} />
                 <Route path="/merchant/profile" element={<UserOrderList />}/>
                 <Route path="/shopsection" element={<CategoryManagement/>}/>
+                <Route path="/coupons" element={<CouponsDashboard/>} />
             </Route>
         </Routes>
     );
