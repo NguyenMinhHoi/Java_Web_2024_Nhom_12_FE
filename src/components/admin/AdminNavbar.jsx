@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiUsers, FiCheckSquare, FiBarChart2 } from 'react-icons/fi';
+import {FiUsers, FiCheckSquare, FiBarChart2, FiTag} from 'react-icons/fi';
 import {LogOut} from "lucide-react";
 
 export default function AdminNavbar({ activeTab, setActiveTab }) {
@@ -7,6 +7,7 @@ export default function AdminNavbar({ activeTab, setActiveTab }) {
         { id: 'accounts', name: 'Tài khoản', icon: FiUsers },
         { id: 'approvals', name: 'Phê duyệt', icon: FiCheckSquare },
         { id: 'revenue', name: 'Doanh thu', icon: FiBarChart2 },
+        { id: 'vouchers', name: 'Mã giảm giá', icon: FiTag },
         { id: 'logout', name: "Đăng xuất", icon: LogOut },
     ];
 

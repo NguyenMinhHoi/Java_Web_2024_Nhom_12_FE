@@ -4,6 +4,7 @@ import AccountManagement from './AccountManagement';
 import ApprovalManagement from './ApprovalManagement';
 import RevenueAnalytics from './RevenueAnalytics';
 import {useNavigate} from "react-router-dom";
+import VoucherAdminDashboard from "./VoucherAdminDashboard";
 
 export default function DashboardAdminHome() {
     const [activeTab, setActiveTab] = useState('accounts');
@@ -17,6 +18,7 @@ export default function DashboardAdminHome() {
                     {activeTab === 'accounts' && <AccountManagement />}
                     {activeTab === 'approvals' && <ApprovalManagement />}
                     {activeTab === 'revenue' && <RevenueAnalytics />}
+                    {activeTab === 'vouchers' && <VoucherAdminDashboard/>}
                     {activeTab === 'logout' && navigate('/login')}
                 </div>
             </main>

@@ -32,7 +32,27 @@ const urlManager = {
       getRevenueChart: (id)=> `/merchants/revenue-chart/${id}`,
       compareRevenueWithPreviousMonth : (id) => `/merchants/compare-revenue/${id}`,
       updateOrder : (id) => `/orders/status`,
-      filterProduct: `/products/filter`
+      filterProduct: `/products/filter`,
+      getVoucherById: (id) => `/vouchers/${id}`,
+      createVoucher: '/vouchers',
+      updateVoucher: (id) => `/vouchers/${id}`,
+      deleteVoucher: (id) => `/vouchers/${id}`,
+      getActiveVouchers: '/vouchers/active',
+      getExpiredVouchers: '/vouchers/expired',
+      getVoucherByCode: (code) => `/vouchers/code/${code}`,
+      validateVoucher: (code) => `/vouchers/validate/${code}`,
+      deactivateVoucher: (id) => `/vouchers/${id}/deactivate`,
+      getVouchersByType: (type) => `/vouchers/type/${type}`,
+      getVouchersByCondition: (condition) => `/vouchers/condition/${condition}`,
+      getAbleVouchers: '/vouchers/able',
+      getAbleVouchersByShop: '/vouchers/able/shop',
+      getAbleVouchersBySystem: '/vouchers/able/system',
+      addProductToWishlist: "/wishlist/product/{id}",
+      addShopToWishlist: "/wishlist/shop/{id}",
+      removeProductFromWishlist: "/wishlist/{id}",
+      removeShopFromWishlist: "/wishlist/{id}",
+      getWishlistByUserId: "/wishlist/{id}",
+      getMerchantFollowers: "/wishlist/merchant",
 };
 
 export default urlManager;

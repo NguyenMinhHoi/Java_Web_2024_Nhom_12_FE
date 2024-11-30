@@ -51,12 +51,14 @@ function App() {
                       <Route
                           path='/dashboard/*'
                           element={
-                              <ProtectedRoute allowedRoles={['ROLE_ADMIN', 'ROLE_MERCHANT']}>
+                              <ProtectedRoute allowedRoles={[ 'ROLE_MERCHANT']}>
                                   <Dashboard />
                                </ProtectedRoute>
                           }
                       />
-                      <Route path="/admin" element={<DashboardAdminHome />}/>
+                      <Route path="/admin" element={<ProtectedRoute allowedRoles={['ROLE_ADMIN']}>
+                          <DashboardAdminHome />
+                      </ProtectedRoute>}/>
                   </Routes>
               </PersistGate>
           </Provider>

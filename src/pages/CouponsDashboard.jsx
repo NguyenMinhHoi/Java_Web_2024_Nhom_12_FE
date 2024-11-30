@@ -6,6 +6,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import useAxiosSupport from "../hooks/useAxiosSupport";
 import { useSelector } from "react-redux";
 
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import AddVoucherForm from "../components/AddVoucherForm";
+
 export const generateFakeCoupons = (count) => {
     const coupons = [];
     for (let i = 0; i < count; i++) {
@@ -163,7 +167,7 @@ export default function CouponsDashboard() {
                 </div>
 
                 <Modal isOpen={isModalOpen}>
-                    <AddCouponForm
+                    <AddVoucherForm
                         setIsModalOpen={setIsModalOpen}
                         merchantId={merchantId}
                         onCouponAdded={fetchCoupons}
@@ -176,104 +180,3 @@ export default function CouponsDashboard() {
     );
 }
 
-const AddCouponForm = ({ setIsModalOpen, merchantId, onCouponAdded }) => {
-    const [couponData, setCouponData] = useState({
-        code: '',
-        discount: '',
-        validFrom: '',
-        validTo: '',
-    });
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setCouponData(prevData => ({
-            ...prevData,
-            [name]: value
-        }));
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            // Replace with your actual API call
-            // await axiosSupport.addCoupon({ ...couponData, merchantId });
-            toast.success("Coupon added successfully");
-            onCouponAdded();
-            setIsModalOpen(false);
-        } catch (error) {
-            console.error("Error adding coupon:", error);
-            toast.error("Failed to add coupon");
-        }
-    };
-
-    return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-            <h2 className="text-xl font-semibold mb-4">Add New Coupon</h2>
-            <div>
-                <label htmlFor="code" className="block text-sm font-medium text-gray-700">Coupon Code</label>
-                <input
-                    type="text"
-                    name="code"
-                    id="code"
-                    value={couponData.code}
-                    onChange={handleChange}
-                    required
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
-            </div>
-            <div>
-                <label htmlFor="discount" className="block text-sm font-medium text-gray-700">Discount (%)</label>
-                <input
-                    type="number"
-                    name="discount"
-                    id="discount"
-                    value={couponData.discount}
-                    onChange={handleChange}
-                    required
-                    min="0"
-                    max="100"
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
-            </div>
-            <div>
-                <label htmlFor="validFrom" className="block text-sm font-medium text-gray-700">Valid From</label>
-                <input
-                    type="date"
-                    name="validFrom"
-                    id="validFrom"
-                    value={couponData.validFrom}
-                    onChange={handleChange}
-                    required
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
-            </div>
-            <div>
-                <label htmlFor="validTo" className="block text-sm font-medium text-gray-700">Valid To</label>
-                <input
-                    type="date"
-                    name="validTo"
-                    id="validTo"
-                    value={couponData.validTo}
-                    onChange={handleChange}
-                    required
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
-            </div>
-            <div className="flex justify-end space-x-3">
-                <button
-                    type="button"
-                    onClick={() => setIsModalOpen(false)}
-                    className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Cancel
-                </button>
-                <button
-                    type="submit"
-                    className="bg-indigo-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Thêm saản phẩm
-                </button>
-            </div>
-        </form>
-    );
-};

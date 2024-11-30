@@ -41,6 +41,9 @@ const ProtectedRoute = ({children, allowedRoles}) => {
             }else if(role[i].authority === 'ROLE_USER') {
                 check = true;
                 break;
+            }else if(role[i].authority === 'ROLE_ADMIN') {
+                check = true;
+                break;
             }
         }
     }
