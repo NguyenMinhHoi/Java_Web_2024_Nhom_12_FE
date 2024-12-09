@@ -20,7 +20,7 @@ const ProtectedRoute = ({children, allowedRoles}) => {
                             const response = await axiosSupport.getMerchantByUserId(id);
                             dispatch(setMerchant({
                                 ...response,
-                                id: response.id // Explicitly include the id
+                                id: response.id
                             }));
                         } catch (error) {
                             console.error("Error fetching merchant data:", error);

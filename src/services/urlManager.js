@@ -35,6 +35,8 @@ const urlManager = {
       filterProduct: `/products/filter`,
       getVoucherById: (id) => `/vouchers/${id}`,
       createVoucher: '/vouchers',
+      getVoucherByMerchant: (id)=> `/vouchers/merchants/${id}`,
+      getVoucherSystem : '/vouchers/system',
       updateVoucher: (id) => `/vouchers/${id}`,
       deleteVoucher: (id) => `/vouchers/${id}`,
       getActiveVouchers: '/vouchers/active',
@@ -47,12 +49,16 @@ const urlManager = {
       getAbleVouchers: '/vouchers/able',
       getAbleVouchersByShop: '/vouchers/able/shop',
       getAbleVouchersBySystem: '/vouchers/able/system',
-      addProductToWishlist: "/wishlist/product/{id}",
-      addShopToWishlist: "/wishlist/shop/{id}",
-      removeProductFromWishlist: "/wishlist/{id}",
-      removeShopFromWishlist: "/wishlist/{id}",
-      getWishlistByUserId: "/wishlist/{id}",
-      getMerchantFollowers: "/wishlist/merchant",
+      addProductToWishlist: (id)=> `/wishlists/product/${id}`,
+      addShopToWishlist: (id)=> `/wishlists/shop/${id}`,
+      removeProductFromWishlist: (id) => `/wishlists/product/${id}`,
+      removeShopFromWishlist: (id)=> `/wishlists/shop/${id}`,
+      getWishlistByUserId: "/wishlists/{id}",
+      getMerchantFollowers: "/wishlists/merchant",
+      getAllUser: `/users`,
+      getAllMerchantForm: '/form/all',
+      approvalForm: '/form/approval',
+      rejectForm: '/form/reject'
 };
 
 export default urlManager;

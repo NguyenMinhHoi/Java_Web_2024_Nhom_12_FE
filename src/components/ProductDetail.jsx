@@ -37,6 +37,7 @@ const ProductDetail = () => {
     const [isAnimating, setIsAnimating] = useState(false);
     const [isAddingToCart, setIsAddingToCart] = useState(false);
     const [shop,setShop] = useState(null);
+    const [isWish, setIsWish] = useState(false);
 
 
     const navigate = useNavigate();
@@ -155,9 +156,14 @@ const ProductDetail = () => {
         }
     };
 
-    const handleAddToWishlist = () => {
-        // Implement add to wishlist functionality
-        console.log("Added to wishlist:", product.name);
+    const handleAddToWishlist = async () => {
+        setIsWish(!isWish);
+        if(!isWish){
+            await axiosSupport.addProductToWishlist(product.id);
+        }else{
+            await axiosSupport.removeProductFromWishlist(product.id,userId);
+
+        }
     };
 
     const handleImageUpload = (e) => {
@@ -212,21 +218,20 @@ const ProductDetail = () => {
         setIsAnimating(true);
         setIsAddingToCart('loading')
         try {
-            await handleAddToCart(); // Assuming this is your function to add the item to the cart
+            await handleAddToCart();
             setTimeout(()=>{
                 setIsAddingToCart('success');
             },1000)
             setTimeout(() => {
                 setIsAnimating(false);
-                setIsAddingToCart('loading'); // Reset for next time
+                setIsAddingToCart('loading');
             }, 2000);
         } catch (error) {
             setIsAnimating(false);
             setIsAddingToCart('error');
-            // Wait for 2 seconds before closing the modal
             setTimeout(() => {
                 setIsAnimating(false);
-                setIsAddingToCart('loading'); // Reset for next time
+                setIsAddingToCart('loading');
             }, 2000);
         }
     };
@@ -398,7 +403,7 @@ const ProductDetail = () => {
                                     onClick={handleAddToWishlist}
                                     className="bg-gray-200 text-gray-800 py-2 px-4 rounded-full hover:bg-gray-300 transition-colors transform hover:scale-105 active:scale-95 duration-300"
                                 >
-                                    <FaHeart className="text-red-500"/>
+                                    {isWish ? <FaHeart className="text-red-500"/> : <FaHeart className="text-white-500"/>}
                                 </button>
                             </div>
                         </div>

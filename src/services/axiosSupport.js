@@ -343,6 +343,17 @@ class AxiosSupport {
             body: JSON.stringify(voucherData)
         });
     }
+    async getVoucherByMerchant(merchantId) {
+        return this.fetchWithAuth('getVoucherByMerchant', {
+            method: 'GET'
+        },merchantId);
+    }
+
+    async getVoucherSystem() {
+        return this.fetchWithAuth('getVoucherSystem', {
+            method: 'GET'
+        });
+    }
 
     async updateVoucher(id, voucherData) {
         return this.fetchWithAuth('updateVoucher', {
@@ -459,6 +470,32 @@ class AxiosSupport {
             params: {
                 merchantId: merchantId
             }
+        });
+    }
+
+    async getAllUser() {
+        return this.fetchWithAuth('getAllUser', {
+            method: 'GET'
+        });
+    }
+
+    async getAllMerchantForm() {
+        return this.fetchWithAuth('getAllMerchantForm', {
+            method: 'GET'
+        });
+    }
+
+    async approvalForm(form) {
+        return this.fetchWithAuth('approvalForm', {
+            method: 'PUT',
+            body: form
+        });
+    }
+
+    async rejectForm(form) {
+        return this.fetchWithAuth('rejectForm', {
+            method: 'PUT',
+            body: form
         });
     }
 

@@ -10,6 +10,7 @@ import {
   FiChevronLeft, FiChevronRight
 } from 'react-icons/fi';
 import useAxiosSupport from "../hooks/useAxiosSupport";
+import {OrderStatus} from "../utils/constObject";
 
 const UserOrderList = ({orders, handleOrderSelect, currentPage,totalPages, handlePageChange, isLoad,selectedStatus,setSelectedStatus, pageSize }) => {
 
@@ -58,7 +59,7 @@ const UserOrderList = ({orders, handleOrderSelect, currentPage,totalPages, handl
                   }}
               >
                 {getStatusIcon(status)}
-                <span className="ml-2">{status}</span>
+                <span className="ml-2">{OrderStatus[status]}</span>
               </button>
           ))}
         </div>
@@ -81,7 +82,7 @@ const UserOrderList = ({orders, handleOrderSelect, currentPage,totalPages, handl
       <div className="bg-gray-50 md:p-4 rounded-lg shadow-sm">
         <h2 className="text-xl font-semibold mb-4 flex items-center">
           {getStatusIcon(selectedStatus)}
-          <span className="ml-2">{selectedStatus} Orders</span>
+          <span className="ml-2">Các đơn hàng {OrderStatus[selectedStatus].toLowerCase()}</span>
         </h2>
         {isLoad ? (
             <div className="flex justify-center items-center h-64">
