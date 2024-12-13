@@ -458,6 +458,12 @@ class AxiosSupport {
         }, shopId);
     }
 
+    async getWishlist( userId) {
+        return this.fetchWithAuth('getWishlist', {
+            method: 'GET'
+        }, userId);
+    }
+
     async getWishlistByUserId(userId) {
         return this.fetchWithAuth('getWishlistByUserId', {
             method: 'GET'

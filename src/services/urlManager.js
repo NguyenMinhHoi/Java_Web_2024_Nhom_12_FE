@@ -53,6 +53,7 @@ const urlManager = {
       addShopToWishlist: (id)=> `/wishlists/shop/${id}`,
       removeProductFromWishlist: (id) => `/wishlists/product/${id}`,
       removeShopFromWishlist: (id)=> `/wishlists/shop/${id}`,
+      getWishlist: (id) => `/wishlists/${id}`,
       getWishlistByUserId: "/wishlists/{id}",
       getMerchantFollowers: "/wishlists/merchant",
       getAllUser: `/users`,

@@ -23,6 +23,7 @@ import CompletePayment from "../../components/CompletePayment";
 import CompletePaymentForm from "../../components/CompletePaymentForm";
 import PaymentPage from "../PaymentPage";
 import ProductListingPage from "./ProductListingPage";
+import Wishlist from "../Wishlist";
 
 export default function ClientPage() {
 
@@ -34,6 +35,7 @@ export default function ClientPage() {
              <Route path="/details/:id" element={<ProductDetail />} />
              <Route path="/cart" element={<Cart/>} />
              <Route path="/payment" element={<PaymentPage />} />
+             <Route path='/wishlist' element={<Wishlist />}></Route>
              <Route path="/user/profile" element={
                      <div className="pt-16">
                          <UserProfile />
