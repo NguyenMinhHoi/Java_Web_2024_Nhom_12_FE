@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import {MdOutlineLabel} from "react-icons/md";
+import {toast} from "react-toastify";
 
 const CategoryManagement = () => {
     const {id: shopId} = useSelector(state => state.merchant);
@@ -15,7 +16,8 @@ const CategoryManagement = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedProducts, setSelectedProducts] = useState([]);
     const axiosSupport = useAxiosSupport();
-
+    const [isError,setIsError] = useState(false)
+    const [deleteCategory,setDeleteCategory]= useState(null);
     useEffect(() => {
         fetchCategories();
     }, [shopId]);
@@ -40,12 +42,15 @@ const CategoryManagement = () => {
 
     const handleAddCategory = async (values, { resetForm }) => {
         try {
-            await axiosSupport.createShopSection({ 
+            const res = await axiosSupport.createShopSection({
                 ...values, 
                 merchant: {
                     id: shopId
                 } 
             });
+            if(res === null){
+                setIsError(true)
+            }
             resetForm();
             fetchCategories();
         } catch (error) {
@@ -53,12 +58,11 @@ const CategoryManagement = () => {
         }
     };
 
-    const handleEditCategory = async () => {
+    const handleEditCategory = async (values, { resetForm }) => {
         if (!editingCategory) return;
         try {
-            console.log(selectedProducts)
             await axiosSupport.updateShopSection({
-                ...editingCategory,
+                ...values,
                 id: editingCategory.id,
                 products: selectedProducts,
                 merchant: {
@@ -76,6 +80,7 @@ const CategoryManagement = () => {
     const handleDeleteCategory = async (id) => {
         try {
             await axiosSupport.deleteShopSection(id);
+            setDeleteCategory(null)
             fetchCategories();
         } catch (error) {
             console.error('Error deleting category:', error);
@@ -154,7 +159,7 @@ const CategoryManagement = () => {
                                     <FiEdit2 size={14} />
                                 </button>
                                 <button
-                                    onClick={() => handleDeleteCategory(category.id)}
+                                    onClick={() => setDeleteCategory(category.id)}
                                     className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-100 transition duration-200 ml-1"
                                 >
                                     <FiTrash2 size={14} />
@@ -208,6 +213,44 @@ const CategoryManagement = () => {
                         </Form>
                     )}
                 </Formik>
+            </Modal>
+            <Modal isOpen={isError} onClose={() => setIsError(false)}>
+                    <div>
+                        <h2 className="text-2xl font-bold mb-4"> Tên danh mục đã tồn tại, bạn vui lòng tạo với tên danh mục
+                            khác</h2>
+                    </div>
+                    <div className="flex items-center justify-center">
+                        <button
+                            type="submit"
+                            onClick={() => setIsError(false)}
+                            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mt-4 block"
+                        >
+                            OK
+                        </button>
+                    </div>
+            </Modal>
+            <Modal isOpen={deleteCategory} onClose={() => setDeleteCategory(null)}>
+                <div>
+                    <h2 className="text-2xl font-bold mb-4 text-center">Bạn có chắc chắn muốn xóa danh mục này không?</h2>
+                </div>
+                <div className="flex items-center justify-end">
+                    <div>
+                        <button
+                            type="submit"
+                            onClick={() => handleDeleteCategory(deleteCategory)}
+                            className="bg-green-500 text-white px-8 py-4 rounded hover:bg-green-600 mr-10 mt-4 inline-block"
+                        >
+                            Có
+                        </button>
+                        <button
+                            type="submit"
+                            onClick={() => setDeleteCategory(null)}
+                            className="bg-red-500 text-white px-8 py-4 rounded hover:bg-green-600 mt-4 inline-block"
+                        >
+                            Không
+                        </button>
+                    </div>
+                </div>
             </Modal>
         </div>
     );

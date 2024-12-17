@@ -27,7 +27,7 @@ const urlManager = {
       getOrdersByUserId: (id)=> `/orders/user/${id}`,
       getCategoriesByShop: (id)=> `/shopsections/all/${id}`,
       createShopSection: "/shopsections",
-      deleteShopSection: (id)=> `/merchants/shopsections/${id}`,
+      deleteShopSection: (id)=> `/shopsections/${id}`,
       compareCountOrderWithPreviousMonth:(id) =>`/merchants/compare-order/${id}`,
       getRevenueChart: (id)=> `/merchants/revenue-chart/${id}`,
       compareRevenueWithPreviousMonth : (id) => `/merchants/compare-revenue/${id}`,
