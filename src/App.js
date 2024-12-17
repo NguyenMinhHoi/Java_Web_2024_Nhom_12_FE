@@ -19,6 +19,8 @@ import Cart from "./components/Cart";
 import PaymentPage from "./pages/PaymentPage";
 import ShopDetail from "./components/ShopDetail";
 import UserProfile from "./components/UserProfile";
+import DashboardAdminHome from "./components/admin/DashboardAdminHome";
+import Wishlist from "./pages/Wishlist";
 
 
 function App() {
@@ -50,11 +52,14 @@ function App() {
                       <Route
                           path='/dashboard/*'
                           element={
-                              <ProtectedRoute allowedRoles={['ROLE_ADMIN', 'ROLE_MERCHANT']}>
+                              <ProtectedRoute allowedRoles={[ 'ROLE_MERCHANT']}>
                                   <Dashboard />
                                </ProtectedRoute>
                           }
                       />
+                      <Route path="/admin" element={<ProtectedRoute allowedRoles={['ROLE_ADMIN']}>
+                          <DashboardAdminHome />
+                      </ProtectedRoute>}/>
                   </Routes>
               </PersistGate>
           </Provider>

@@ -6,6 +6,7 @@ import {useSelector} from "react-redux";
 import useAxiosSupport from "../hooks/useAxiosSupport";
 import default_image from '../assets/images/default-image.svg';
 import UserOrderPage from "./UserOrderPage";
+import {FileSignature} from "lucide-react";
 
 const NavItem = ({ icon, label, active, onClick }) => {
     return (
@@ -69,6 +70,8 @@ const UserProfile = () => {
                 return <UserOrderPage/>;
             case 'personal':
                 return <p>Thông tin cá nhân khác sẽ được hiển thị ở đây.</p>;
+            case 'merchant':
+                return <p>Bạn có muốn đăng kí làm một người bán hàng? <a href={"/merchant/register"} className="text-blue-500">Click vào đây</a></p>
             default:
                 return null;
         }
@@ -90,6 +93,8 @@ const UserProfile = () => {
                              onClick={() => setActiveTab('orders')}/>
                     <NavItem icon={<FiInfo/>} label="Thông tin cá nhân" active={activeTab === 'personal'}
                              onClick={() => setActiveTab('personal')}/>
+                    <NavItem icon={<FileSignature/>} label="Đăng kí người bán" active={activeTab === 'merchant'}
+                             onClick={() => setActiveTab('merchant')}/>
                 </nav>
             </div>
 
@@ -98,7 +103,7 @@ const UserProfile = () => {
                 <div className="bg-white shadow-lg rounded-lg overflow-hidden">
                     <div className="p-4 md:p-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white">
                         <div className="flex items-center justify-between">
-                            <h2 className="text-xl md:text-2xl font-bold">{activeTab === 'profile' ? 'Hồ sơ người dùng' : activeTab === 'orders' ? 'Đơn hàng' : 'Thông tin cá nhân'}</h2>
+                            <h2 className="text-xl md:text-2xl font-bold">{activeTab === 'profile' ? 'Hồ sơ người dùng' : activeTab === 'orders' ? 'Đơn hàng':activeTab ==='merchant' ? "Đăng kí người bán" : 'Thông tin cá nhân'}</h2>
                             {activeTab === 'profile' && !isEditing && (
                                 <button
                                     onClick={handleEdit}

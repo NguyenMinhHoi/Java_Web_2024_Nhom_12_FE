@@ -4,6 +4,7 @@ import { Bar } from 'react-chartjs-2';
 import { FiActivity, FiDollarSign, FiShoppingCart, FiUsers } from 'react-icons/fi';
 import {useSelector} from "react-redux";
 import useAxiosSupport from "../hooks/useAxiosSupport";
+import BestSellerProducts from "./BestSellerProducts";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -23,7 +24,45 @@ const chartData = [
     { name: 'T12', value: 5400 },
 ];
 
-const StatCard = ({ title, value, icon: Icon, change }) => (
+const bestSellerProducts = [
+    {
+        id: 1,
+        name: "Smartphone X1",
+        sales: 1250,
+        revenue: 25000000,
+        image: "https://via.placeholder.com/50x50?text=X1"
+    },
+    {
+        id: 2,
+        name: "Laptop Pro",
+        sales: 850,
+        revenue: 42500000,
+        image: "https://via.placeholder.com/50x50?text=LP"
+    },
+    {
+        id: 3,
+        name: "Wireless Earbuds",
+        sales: 2000,
+        revenue: 10000000,
+        image: "https://via.placeholder.com/50x50?text=WE"
+    },
+    {
+        id: 4,
+        name: "Smart Watch",
+        sales: 1500,
+        revenue: 15000000,
+        image: "https://via.placeholder.com/50x50?text=SW"
+    },
+    {
+        id: 5,
+        name: "4K TV",
+        sales: 500,
+        revenue: 50000000,
+        image: "https://via.placeholder.com/50x50?text=4K"
+    }
+];
+
+export const StatCard = ({ title, value, icon: Icon, change }) => (
     <div className="bg-white p-6 rounded-lg shadow-sm">
         <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-medium text-gray-500">{title}</h3>
@@ -33,19 +72,6 @@ const StatCard = ({ title, value, icon: Icon, change }) => (
         <p className={`text-sm ${change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
             {change}
         </p>
-    </div>
-);
-
-const RecentSaleItem = ({ name, email, amount }) => (
-    <div className="flex items-center justify-between py-3">
-        <div className="flex items-center">
-            <div className="w-8 h-8 bg-gray-200 rounded-full mr-3"></div>
-            <div>
-                <p className="font-medium text-sm text-gray-900">{name}</p>
-                <p className="text-xs text-gray-500">{email}</p>
-            </div>
-        </div>
-        <p className="font-medium text-sm text-gray-900">+{amount} đ</p>
     </div>
 );
 
@@ -218,7 +244,7 @@ export default function DashboardHome() {
                     </div>
                     <ChartJSBarChart currentData={currentRevenueData} previousData={previousRevenueData}/>
                 </div>
-                {/* Rest of the component remains the same */}
+                <BestSellerProducts products={bestSellerProducts} />
             </div>
         </div>
     );

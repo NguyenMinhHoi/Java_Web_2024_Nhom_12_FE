@@ -50,8 +50,13 @@ const ShopDetails = () => {
         return parts.filter(Boolean).join(', ');
     }
 
-    const handleFollow = () => {
+    const handleFollow = async () => {
         setIsFollowing(!isFollowing);
+        if(!isFollowing){
+            await axiosInstance.addShopToWishlist(shop.id)
+        }else{
+            await axiosInstance.removeShopFromWishlist(shop.id,userId)
+        }
     }
 
     const sortProducts = (products) => {
@@ -160,7 +165,7 @@ const ShopDetails = () => {
                                 {sortProducts(products).map((product) => (
                                     <div key={product.id}
                                          className="bg-white shadow-md rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105">
-                                        <img src={product.image[0].path} alt={product.name}
+                                        <img src={product?.image[0]?.path || default_image} alt={product.name}
                                              className="w-full h-48 object-cover"/>
                                         <div className="p-4">
                                             <h3 className="font-semibold text-lg mb-2">{product.name}</h3>

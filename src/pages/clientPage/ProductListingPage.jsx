@@ -4,6 +4,7 @@ import {FaStar} from "react-icons/fa";
 import {Pagination} from "swiper/modules";
 import useAxiosSupport from "../../hooks/useAxiosSupport";
 import {to} from "react-spring";
+import {useNavigate} from "react-router-dom";
 
 
 
@@ -11,6 +12,7 @@ const ProductListingPage = () => {
   const axiosInstant = useAxiosSupport();
   const [products, setProducts] = useState([]);
   const filterRef = useRef(null);
+  const navigate = useNavigate();
   const [totalPages,setTotalPages] = useState();
   const [categories, setCategories] = useState([]);
   const [provinces,setProvinces] = useState([]);
@@ -286,7 +288,8 @@ const ProductListingPage = () => {
                         </p>
                     </div>
                     <div className="px-4 py-2 bg-gray-100">
-                        <button className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300">
+                        <button className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-300"
+                        onClick={()=>navigate(`/client/details/${product.id}`)}>
                             Xem chi tiết
                         </button>
                     </div>

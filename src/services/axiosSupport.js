@@ -331,6 +331,180 @@ class AxiosSupport {
         });
     }
 
+    async getVoucherById(id) {
+        return this.fetchWithAuth('getVoucherById', {
+            method: 'GET'
+        }, id);
+    }
+
+    async createVoucher(voucherData) {
+        return this.fetchWithAuth('createVoucher', {
+            method: 'POST',
+            body: JSON.stringify(voucherData)
+        });
+    }
+    async getVoucherByMerchant(merchantId) {
+        return this.fetchWithAuth('getVoucherByMerchant', {
+            method: 'GET'
+        },merchantId);
+    }
+
+    async getVoucherSystem() {
+        return this.fetchWithAuth('getVoucherSystem', {
+            method: 'GET'
+        });
+    }
+
+    async updateVoucher(id, voucherData) {
+        return this.fetchWithAuth('updateVoucher', {
+            method: 'PUT',
+            body: JSON.stringify(voucherData)
+        }, id);
+    }
+
+    async deleteVoucher(id) {
+        return this.fetchWithAuth('deleteVoucher', {
+            method: 'DELETE'
+        }, id);
+    }
+
+    async getActiveVouchers() {
+        return this.fetchWithAuth('getActiveVouchers', {
+            method: 'GET'
+        });
+    }
+
+    async getExpiredVouchers() {
+        return this.fetchWithAuth('getExpiredVouchers', {
+            method: 'GET'
+        });
+    }
+
+    async getVoucherByCode(code) {
+        return this.fetchWithAuth('getVoucherByCode', {
+            method: 'GET'
+        }, code);
+    }
+
+    async validateVoucher(code) {
+        return this.fetchWithAuth('validateVoucher', {
+            method: 'POST'
+        }, code);
+    }
+
+    async deactivateVoucher(id) {
+        return this.fetchWithAuth('deactivateVoucher', {
+            method: 'POST'
+        }, id);
+    }
+
+    async getVouchersByType(type) {
+        return this.fetchWithAuth('getVouchersByType', {
+            method: 'GET'
+        }, type);
+    }
+
+    async getVouchersByCondition(condition) {
+        return this.fetchWithAuth('getVouchersByCondition', {
+            method: 'GET'
+        }, condition);
+    }
+
+    async getAbleVouchers() {
+        return this.fetchWithAuth('getAbleVouchers', {
+            method: 'GET'
+        });
+    }
+
+    async getAbleVouchersByShop() {
+        return this.fetchWithAuth('getAbleVouchersByShop', {
+            method: 'GET'
+        });
+    }
+
+    async getAbleVouchersBySystem() {
+        return this.fetchWithAuth('getAbleVouchersBySystem', {
+            method: 'GET'
+        });
+    }
+
+    async addProductToWishlist(productId) {
+        return this.fetchWithAuth('addProductToWishlist', {
+            method: 'POST'
+        }, productId);
+    }
+
+    async addShopToWishlist(shopId) {
+        return this.fetchWithAuth('addShopToWishlist', {
+            method: 'POST'
+        }, shopId);
+    }
+
+    async removeProductFromWishlist(productId, userId) {
+        return this.fetchWithAuth('removeProductFromWishlist', {
+            method: 'DELETE',
+            params: {
+                userId: userId
+            }
+        }, productId);
+    }
+
+    async removeShopFromWishlist(shopId, userId) {
+        return this.fetchWithAuth('removeShopFromWishlist', {
+            method: 'DELETE',
+            params: {
+                userId: userId
+            }
+        }, shopId);
+    }
+
+    async getWishlist( userId) {
+        return this.fetchWithAuth('getWishlist', {
+            method: 'GET'
+        }, userId);
+    }
+
+    async getWishlistByUserId(userId) {
+        return this.fetchWithAuth('getWishlistByUserId', {
+            method: 'GET'
+        }, userId);
+    }
+
+    async getMerchantFollowers(merchantId) {
+        return this.fetchWithAuth('getMerchantFollowers', {
+            method: 'GET',
+            params: {
+                merchantId: merchantId
+            }
+        });
+    }
+
+    async getAllUser() {
+        return this.fetchWithAuth('getAllUser', {
+            method: 'GET'
+        });
+    }
+
+    async getAllMerchantForm() {
+        return this.fetchWithAuth('getAllMerchantForm', {
+            method: 'GET'
+        });
+    }
+
+    async approvalForm(form) {
+        return this.fetchWithAuth('approvalForm', {
+            method: 'PUT',
+            body: form
+        });
+    }
+
+    async rejectForm(form) {
+        return this.fetchWithAuth('rejectForm', {
+            method: 'PUT',
+            body: form
+        });
+    }
+
 }
 
 export default AxiosSupport;

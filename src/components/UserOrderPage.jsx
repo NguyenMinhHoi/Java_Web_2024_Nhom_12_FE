@@ -25,7 +25,7 @@ const UserOrderPage = () => {
             const response = await axiosInstance.getOrdersByUserId(id,currentPage,PAGE_SIZE,selectedStatus);
             const formattedOrders = response.content.map(order => ({
                 id: order.orderCode,
-                status: order.status,
+                status:  order.status,
                 orderDate: new Date(order.orderDate).toISOString(),
                 totalAmount: order.total,
                 products: order.variants.map(variant => ({

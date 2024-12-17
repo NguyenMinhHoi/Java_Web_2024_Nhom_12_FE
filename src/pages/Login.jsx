@@ -51,8 +51,10 @@ function Login() {
 
                     }
                     toast.success('Đăng nhập thành công!');
-                    if (data.roles.some(role => role.authority === 'ROLE_ADMIN' || data.roles.some(role => role.authority === 'ROLE_MERCHANT' ))) {
+                    if (data.roles.some(role => role.authority === 'ROLE_MERCHANT' )) {
                         navigate('/dashboard/');
+                    }else if(data.roles.some(role => role.authority === 'ROLE_ADMIN')){
+                        navigate('/admin');
                     } else {
                         navigate('/client');
                     }
