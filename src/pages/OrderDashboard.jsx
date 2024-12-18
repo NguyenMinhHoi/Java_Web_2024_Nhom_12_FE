@@ -7,6 +7,7 @@ import {setOrderPage} from "../redux/reducers/commonReducer";
 import Modal from "../components/Modal";
 import QuickApprovalInput from "../components/QuickApprovalInput";
 import websocketConfig from "../config/websocketConfig";
+import {OrderStatus} from "../utils/constObject";
 const OrderDashboard = () => {
     const orderInit = useSelector(state => state.merchant.orders);
 
@@ -47,7 +48,10 @@ const OrderDashboard = () => {
 
 
 
-    const handleQuickApprove = () => {
+    const handleQuickApprove = async () => {
+        const ids = orders.filter(order => order.status === 'PENDING').map(order => order.id);
+        await axiosSupport.updateOrder(ids);
+        orders.filter(order => order.status === 'PENDING').forEach(order => {order.status = 'DOING'});
         setIsModalOpen(true);
     };
 
@@ -105,7 +109,7 @@ const OrderDashboard = () => {
     }, [user.id]);
 
     useEffect(() => {
-            fetchOrders(currentPage);
+        fetchOrders(currentPage);
     }, []);
 
     const fetchOrders = async (pageNumber) => {
@@ -341,24 +345,6 @@ const OrderDashboard = () => {
                     </div>
                 </div>
             </div>
-            <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <h2 className="text-2xl font-bold mb-4">Phê duyệt nhanh đơn hàng</h2>
-                <QuickApprovalInput orderCodes={orderCodes} setOrderCodes={setOrderCodes} />
-                <div className="mt-4 flex justify-end">
-                    <button
-                        onClick={submitQuickApprove}
-                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300"
-                    >
-                        Phê duyệt
-                    </button>
-                    <button
-                        onClick={closeModal}
-                        className="ml-2 bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition duration-300"
-                    >
-                        Hủy
-                    </button>
-                </div>
-            </Modal>
         </div>
     );
 };
