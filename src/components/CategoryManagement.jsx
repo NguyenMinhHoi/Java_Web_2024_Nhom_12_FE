@@ -245,7 +245,7 @@ const CategoryManagement = () => {
                         <button
                             type="submit"
                             onClick={() => setDeleteCategory(null)}
-                            className="bg-red-500 text-white px-8 py-4 rounded hover:bg-green-600 mt-4 inline-block"
+                            className="bg-red-500 text-white px-8 py-4 rounded hover:bg-red-600 mt-4 inline-block"
                         >
                             Không
                         </button>

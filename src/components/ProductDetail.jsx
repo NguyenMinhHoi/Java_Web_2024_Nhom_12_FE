@@ -125,11 +125,11 @@ const ProductDetail = () => {
 
 
     useEffect(() => {
-       const fetchComment = async ()=>{
-           const reviewsRes = await axiosSupport.getReviewsByProductId(id);
-           setComments(reviewsRes || []);
-       }
-       fetchComment();
+        const fetchComment = async ()=>{
+            const reviewsRes = await axiosSupport.getReviewsByProductId(id);
+            setComments(reviewsRes || []);
+        }
+        fetchComment();
     }, [id]);
 
 
@@ -189,7 +189,6 @@ const ProductDetail = () => {
             ...prevOptions,
             [groupName]: optionName
         }));
-        console.log(prevOptions);
 
         const matchingVariant = variants.find(variant =>
             variant.options.every(opt =>
@@ -314,7 +313,7 @@ const ProductDetail = () => {
                                     {selectedVariant?.price || `${product.minPrice || 0} - ${product.maxPrice || 0}`} VND
                               </span>
                             </div>
-                            <span className="text-sm text-gray-500">Đã bán: {product.sold}</span>
+                            <span className="text-sm text-gray-500">ÄÃ£ bÃ¡n: {product.sold}</span>
 
                             <div className="flex items-center mb-4">
 
@@ -325,7 +324,7 @@ const ProductDetail = () => {
                                     ))}
                                 </div>
                                 <span
-                                    className="text-sm text-gray-600">{Number(product?.rating || 0).toFixed(2)} ({comments.length} đánh giá)</span>
+                                    className="text-sm text-gray-600">{Number(product?.rating || 0).toFixed(2)} ({comments.length} Ä‘Ã¡nh giÃ¡)</span>
                             </div>
                             {product.isDiscount && (
                                 <span
@@ -367,7 +366,7 @@ const ProductDetail = () => {
                                             </div>
                                             <div
                                                 className="flex items-center text-sm text-gray-600 mt-1 whitespace-nowrap">
-                                                <span className="text-xs text-gray-500">Đã bán {shop.sold}</span>
+                                                <span className="text-xs text-gray-500">ÄÃ£ bÃ¡n {shop.sold}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -376,8 +375,8 @@ const ProductDetail = () => {
                                 </div>
                             </button>
                             <div className="border-t pt-4">
-                                <h3 className="text-lg font-semibold mb-2">Thông tin thêm:</h3>
-                                <p className="text-sm text-gray-600 mb-1">Danh mục: {product.category.name}</p>
+                                <h3 className="text-lg font-semibold mb-2">ThÃ´ng tin thÃªm:</h3>
+                                <p className="text-sm text-gray-600 mb-1">Danh má»¥c: {product.category.name}</p>
                                 {/* Add more product details here */}
                             </div>
                             <VariantSelect
@@ -392,7 +391,7 @@ const ProductDetail = () => {
                                 >
                                     <FaShoppingCart className="mr-2"/>
                                     <span className="relative">
-                                        Thêm vào giỏ hàng
+                                        ThÃªm vÃ o giá» hÃ ng
                                         <span
                                             className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center transform scale-0 transition-transform duration-300 group-hover:scale-100">
                                             +1
@@ -411,9 +410,9 @@ const ProductDetail = () => {
 
                     {/* Comments Section */}
                     <div className="mt-12">
-                        <h2 className="text-2xl font-bold mb-4">Đánh giá sản phẩm</h2>
+                        <h2 className="text-2xl font-bold mb-4">ÄÃ¡nh giÃ¡ sáº£n pháº©m</h2>
                         <div className="mb-6">
-                        <form onSubmit={handleSubmitComment} className="mt-6">
+                            <form onSubmit={handleSubmitComment} className="mt-6">
                                 <div className="flex mb-4">
                                     {[...Array(5)].map((_, index) => (
                                         <FaStar
@@ -426,7 +425,7 @@ const ProductDetail = () => {
                                 <textarea
                                     value={newComment}
                                     onChange={(e) => setNewComment(e.target.value)}
-                                    placeholder="Viết bình luận của bạn..."
+                                    placeholder="Viáº¿t bÃ¬nh luáº­n cá»§a báº¡n..."
                                     className="w-full p-2 border rounded-md"
                                     rows="4"
                                 />
@@ -434,7 +433,7 @@ const ProductDetail = () => {
                                     <label htmlFor="commentImage"
                                            className="cursor-pointer flex items-center text-blue-500 hover:text-blue-600">
                                         <FaUpload className="mr-2"/>
-                                        Tải ảnh lên
+                                        Táº£i áº£nh lÃªn
                                     </label>
                                     <input
                                         type="file"
@@ -464,7 +463,7 @@ const ProductDetail = () => {
                                     type="submit"
                                     className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                                 >
-                                    Gửi bình luận
+                                    Gá»­i bÃ¬nh luáº­n
                                 </button>
                             </form>
                         </div>
@@ -501,7 +500,7 @@ const ProductDetail = () => {
                     </div>
                     {/* Related Products Section */}
                     <div className="mt-12">
-                        <h2 className="text-2xl font-bold mb-4">Sản phẩm liên quan</h2>
+                        <h2 className="text-2xl font-bold mb-4">Sáº£n pháº©m liÃªn quan</h2>
                         <Swiper
                             modules={[Navigation, Pagination]}
                             spaceBetween={20}
@@ -531,7 +530,7 @@ const ProductDetail = () => {
                                             <span className="font-bold text-blue-600">${item.minPrice}</span>
                                             <button
                                                 className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm hover:bg-blue-700 transition-colors">
-                                                Xem chi tiết
+                                                Xem chi tiáº¿t
                                             </button>
                                         </div>
                                     </div>
@@ -540,59 +539,59 @@ const ProductDetail = () => {
                         </Swiper>
                     </div>
                 </div>
-                    {isAnimating && (
-                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                            <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full mx-4">
-                                {isAddingToCart === 'loading' && (
-                                    <div className="text-center">
-                                        <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-                                        <h2 className="text-2xl font-bold mb-4 text-gray-800">Đang thêm vào giỏ hàng...</h2>
-                                        <p className="text-gray-600 mb-6">Vui lòng đợi trong giây lát.</p>
-                                    </div>
-                                )}
-                                {isAddingToCart === 'success' && (
-                                    <div className="text-center">
-                                        <div className="inline-block text-green-500 mb-4">
-                                            <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                                            </svg>
-                                        </div>
-                                        <h2 className="text-2xl font-bold mb-4 text-gray-800">Thêm vào giỏ hàng thành công!</h2>
-                                        <p className="text-gray-600 mb-6">Sản phẩm đã được thêm vào giỏ hàng của bạn.</p>
-                                    </div>
-                                )}
-                                {isAddingToCart === 'error' && (
-                                    <div className="text-center">
-                                        <div className="inline-block text-red-500 mb-4">
-                                            <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-                                            </svg>
-                                        </div>
-                                        <h2 className="text-2xl font-bold mb-4 text-gray-800">Lỗi khi thêm vào giỏ hàng</h2>
-                                        <p className="text-gray-600 mb-6">Đã xảy ra lỗi. Vui lòng thử lại sau.</p>
-                                    </div>
-                                )}
-                                <div className="mt-6 flex justify-center">
-                                    <button
-                                        onClick={() => setIsAnimating(false)}
-                                        className="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    >
-                                        Đóng
-                                    </button>
+                {isAnimating && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full mx-4">
+                            {isAddingToCart === 'loading' && (
+                                <div className="text-center">
+                                    <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
+                                    <h2 className="text-2xl font-bold mb-4 text-gray-800">Äang thÃªm vÃ o giá» hÃ ng...</h2>
+                                    <p className="text-gray-600 mb-6">Vui lÃ²ng Ä‘á»£i trong giÃ¢y lÃ¡t.</p>
                                 </div>
+                            )}
+                            {isAddingToCart === 'success' && (
+                                <div className="text-center">
+                                    <div className="inline-block text-green-500 mb-4">
+                                        <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <h2 className="text-2xl font-bold mb-4 text-gray-800">ThÃªm vÃ o giá» hÃ ng thÃ nh cÃ´ng!</h2>
+                                    <p className="text-gray-600 mb-6">Sáº£n pháº©m Ä‘Ã£ Ä‘Æ°á»£c thÃªm vÃ o giá» hÃ ng cá»§a báº¡n.</p>
+                                </div>
+                            )}
+                            {isAddingToCart === 'error' && (
+                                <div className="text-center">
+                                    <div className="inline-block text-red-500 mb-4">
+                                        <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </div>
+                                    <h2 className="text-2xl font-bold mb-4 text-gray-800">Lá»—i khi thÃªm vÃ o giá» hÃ ng</h2>
+                                    <p className="text-gray-600 mb-6">ÄÃ£ xáº£y ra lá»—i. Vui lÃ²ng thá»­ láº¡i sau.</p>
+                                </div>
+                            )}
+                            <div className="mt-6 flex justify-center">
+                                <button
+                                    onClick={() => setIsAnimating(false)}
+                                    className="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                >
+                                    ÄÃ³ng
+                                </button>
                             </div>
                         </div>
-                    )}
+                    </div>
+                )}
             </main>
 
 
             {/* Contact div */}
             <div id="contact" className="py-12 md:py-20">
                 <div className="container mx-auto text-center">
-                    <h2 className="text-2xl md:text-3xl font-bold mb-8">Thông tin liên hệ</h2>
+                    <h2 className="text-2xl md:text-3xl font-bold mb-8">ThÃ´ng tin liÃªn há»‡</h2>
                     <a href="mailto:library@university.edu"
                        className="bg-[#0b328f] text-white px-4 py-2 md:px-6 md:py-3 rounded-full hover:bg-[#08367b] text-base md:text-lg transition-transform transform hover:scale-105">
-                        <FaEnvelope size={20} className="inline mr-2"/> Gửi Email
+                        <FaEnvelope size={20} className="inline mr-2"/> Gá»­i Email
                     </a>
                 </div>
             </div>

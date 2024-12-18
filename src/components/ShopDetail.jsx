@@ -21,6 +21,15 @@ const ShopDetails = () => {
     const [isFollowing, setIsFollowing] = useState(false);
     const axiosInstance = useAxiosSupport();
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 6; // Number of products per page
+
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const [currentProducts, setCurrentProducts] = useState([]);
+
+    const totalPages = Math.ceil(products.length / productsPerPage);
+
     useEffect(() => {
         const fetchShopDetails = async () => {
             try {
@@ -72,6 +81,18 @@ const ShopDetails = () => {
         }
     }
 
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
     return (
         <>
             {userId ? <ClientHeader currentUser={userId}/> : <HomeHeader/>}
@@ -103,7 +124,7 @@ const ShopDetails = () => {
                                 className={`flex items-center px-4 py-2 rounded ${isFollowing ? 'bg-gray-200 text-gray-800' : 'bg-blue-500 text-white'}`}
                             >
                                 <FaHeart className="mr-2"/>
-                                {isFollowing ? 'Đang theo dõi' : 'Theo dõi'}
+                                {isFollowing ? 'Äang theo dÃµi' : 'Theo dÃµi'}
                             </button>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
@@ -136,13 +157,19 @@ const ShopDetails = () => {
                                     className={`px-4 py-2 font-medium ${activeTab === 'products' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}
                                     onClick={() => setActiveTab('products')}
                                 >
-                                    Sản phẩm
+                                    Sáº£n pháº©m
                                 </button>
                                 <button
                                     className={`px-4 py-2 font-medium ${activeTab === 'reviews' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}
                                     onClick={() => setActiveTab('reviews')}
                                 >
-                                    Đánh giá
+                                    ÄÃ¡nh giÃ¡
+                                </button>
+                                <button
+                                    className={`px-4 py-2 font-medium ${activeTab === 'reviews' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}
+                                    onClick={() => setActiveTab('reviews')}
+                                >
+                                    Danh má»¥c
                                 </button>
                             </div>
                             {activeTab === 'products' && (
@@ -151,10 +178,10 @@ const ShopDetails = () => {
                                     value={sortBy}
                                     onChange={(e) => setSortBy(e.target.value)}
                                 >
-                                    <option value="popular">Phổ biến</option>
-                                    <option value="price-low">Giá thấp đến cao</option>
-                                    <option value="price-high">Giá cao đến thấp</option>
-                                    <option value="newest">Mới nhất</option>
+                                    <option value="popular">Phá»• biáº¿n</option>
+                                    <option value="price-low">GiÃ¡ tháº¥p Ä‘áº¿n cao</option>
+                                    <option value="price-high">GiÃ¡ cao Ä‘áº¿n tháº¥p</option>
+                                    <option value="newest">Má»›i nháº¥t</option>
                                 </select>
                             )}
                         </nav>
@@ -162,15 +189,15 @@ const ShopDetails = () => {
                     {activeTab === 'products' && (
                         <div className="p-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {sortProducts(products).map((product) => (
+                                {currentProducts.map((product) => (
                                     <div key={product.id}
                                          className="bg-white shadow-md rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105">
                                         <img src={product?.image[0]?.path || default_image} alt={product.name}
                                              className="w-full h-48 object-cover"/>
                                         <div className="p-4">
                                             <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
-                                            <p className="text-blue-600 font-bold">{product.minPrice}đ
-                                                - {product.maxPrice}đ</p>
+                                            <p className="text-blue-600 font-bold">{product.minPrice}Ä‘
+                                                - {product.maxPrice}Ä‘</p>
                                             <div className="flex items-center mt-2">
                                                 <FiStar className="text-yellow-400 mr-1"/>
                                                 <span>{product.rating}</span>
@@ -178,15 +205,32 @@ const ShopDetails = () => {
                                             <button
                                                 className="mt-3 flex items-center justify-center w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
                                                 <FiShoppingBag className="mr-2"/>
-                                                Thêm vào giỏ
+                                                ThÃªm vÃ o giá»
                                             </button>
                                         </div>
                                     </div>
                                 ))}
                             </div>
+                            <div className="flex justify-between mt-4">
+                                <button
+                                    onClick={handlePreviousPage}
+                                    disabled={currentPage === 1}
+                                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
+                                >
+                                    Trang trÆ°á»›c
+                                </button>
+                                <span>Page {currentPage} of {totalPages}</span>
+                                <button
+                                    onClick={handleNextPage}
+                                    disabled={currentPage === totalPages}
+                                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
+                                >
+                                    Trang sau
+                                </button>
+                            </div>
                         </div>
                     )}
-                
+
                     {activeTab === 'reviews' && (
                         <div className="p-6 space-y-4">
                             {reviews.map((comment, index) => (
