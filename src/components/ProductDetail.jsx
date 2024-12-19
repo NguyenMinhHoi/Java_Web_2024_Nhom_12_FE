@@ -313,7 +313,7 @@ const ProductDetail = () => {
                                     {selectedVariant?.price || `${product.minPrice || 0} - ${product.maxPrice || 0}`} VND
                               </span>
                             </div>
-                            <span className="text-sm text-gray-500">ÄÃ£ bÃ¡n: {product.sold}</span>
+                            <span className="text-sm text-gray-500">: {product.sold}</span>
 
                             <div className="flex items-center mb-4">
 
@@ -324,7 +324,7 @@ const ProductDetail = () => {
                                     ))}
                                 </div>
                                 <span
-                                    className="text-sm text-gray-600">{Number(product?.rating || 0).toFixed(2)} ({comments.length} Ä‘Ã¡nh giÃ¡)</span>
+                                    className="text-sm text-gray-600">{Number(product?.rating || 0).toFixed(2)} ({comments.length} Đánh giá)</span>
                             </div>
                             {product.isDiscount && (
                                 <span
@@ -366,7 +366,7 @@ const ProductDetail = () => {
                                             </div>
                                             <div
                                                 className="flex items-center text-sm text-gray-600 mt-1 whitespace-nowrap">
-                                                <span className="text-xs text-gray-500">ÄÃ£ bÃ¡n {shop.sold}</span>
+                                                <span className="text-xs text-gray-500">Đã bán {shop.sold}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -375,8 +375,8 @@ const ProductDetail = () => {
                                 </div>
                             </button>
                             <div className="border-t pt-4">
-                                <h3 className="text-lg font-semibold mb-2">ThÃ´ng tin thÃªm:</h3>
-                                <p className="text-sm text-gray-600 mb-1">Danh má»¥c: {product.category.name}</p>
+                                <h3 className="text-lg font-semibold mb-2">thông tin sản phẩm:</h3>
+                                <p className="text-sm text-gray-600 mb-1">Danh mục: {product.category.name}</p>
                                 {/* Add more product details here */}
                             </div>
                             <VariantSelect
@@ -391,7 +391,7 @@ const ProductDetail = () => {
                                 >
                                     <FaShoppingCart className="mr-2"/>
                                     <span className="relative">
-                                        ThÃªm vÃ o giá» hÃ ng
+                                        Thêm vào giỏ hàng
                                         <span
                                             className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center transform scale-0 transition-transform duration-300 group-hover:scale-100">
                                             +1
@@ -410,7 +410,7 @@ const ProductDetail = () => {
 
                     {/* Comments Section */}
                     <div className="mt-12">
-                        <h2 className="text-2xl font-bold mb-4">ÄÃ¡nh giÃ¡ sáº£n pháº©m</h2>
+                        <h2 className="text-2xl font-bold mb-4">Đánh giá sản phẩm</h2>
                         <div className="mb-6">
                             <form onSubmit={handleSubmitComment} className="mt-6">
                                 <div className="flex mb-4">
@@ -425,7 +425,7 @@ const ProductDetail = () => {
                                 <textarea
                                     value={newComment}
                                     onChange={(e) => setNewComment(e.target.value)}
-                                    placeholder="Viáº¿t bÃ¬nh luáº­n cá»§a báº¡n..."
+                                    placeholder="Viết đánh giá sản phẩm của bạn...."
                                     className="w-full p-2 border rounded-md"
                                     rows="4"
                                 />
@@ -433,7 +433,7 @@ const ProductDetail = () => {
                                     <label htmlFor="commentImage"
                                            className="cursor-pointer flex items-center text-blue-500 hover:text-blue-600">
                                         <FaUpload className="mr-2"/>
-                                        Táº£i áº£nh lÃªn
+                                        Tải ảnh lên
                                     </label>
                                     <input
                                         type="file"
@@ -463,7 +463,7 @@ const ProductDetail = () => {
                                     type="submit"
                                     className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                                 >
-                                    Gá»­i bÃ¬nh luáº­n
+                                    Gửi đánh giá
                                 </button>
                             </form>
                         </div>
@@ -500,7 +500,7 @@ const ProductDetail = () => {
                     </div>
                     {/* Related Products Section */}
                     <div className="mt-12">
-                        <h2 className="text-2xl font-bold mb-4">Sáº£n pháº©m liÃªn quan</h2>
+                        <h2 className="text-2xl font-bold mb-4">Sản phẩm liên quan</h2>
                         <Swiper
                             modules={[Navigation, Pagination]}
                             spaceBetween={20}

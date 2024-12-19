@@ -28,6 +28,7 @@ const urlManager = {
       getCategoriesByShop: (id)=> `/shopsections/all/${id}`,
       createShopSection: "/shopsections",
       deleteShopSection: (id)=> `/shopsections/${id}`,
+      getProductsInShopSection: (id)=> `/shopsections/${id}`,
       compareCountOrderWithPreviousMonth:(id) =>`/merchants/compare-order/${id}`,
       getRevenueChart: (id)=> `/merchants/revenue-chart/${id}`,
       compareRevenueWithPreviousMonth : (id) => `/merchants/compare-revenue/${id}`,
@@ -59,7 +60,8 @@ const urlManager = {
       getAllUser: `/users`,
       getAllMerchantForm: '/form/all',
       approvalForm: '/form/approval',
-      rejectForm: '/form/reject'
+      rejectForm: '/form/reject',
+      getMerchantProducts: `/products/merchant`,
 };
 
 export default urlManager;

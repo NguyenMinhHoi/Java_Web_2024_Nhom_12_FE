@@ -102,13 +102,11 @@ export default function CouponsDashboard() {
     };
 
     const handleEditCoupon = (coupon) => {
-        // Implement edit functionality
         console.log("Editing coupon:", coupon);
     };
 
-    const handleDeleteCoupon = (couponId) => {
-        // Implement delete functionality
-        console.log("Deleting coupon with ID:", couponId);
+    const handleDeleteCoupon = async (couponId) => {
+        await axiosSupport.deleteVoucher(couponId);
     };
 
     const indexOfLastItem = currentPage * itemsPerPage;

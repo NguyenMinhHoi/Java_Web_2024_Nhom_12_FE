@@ -9,6 +9,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
 import {FiClock, FiShoppingBag, FiTag, FiTrendingUp} from "react-icons/fi";
+import {setSelectedCategory} from "../../redux/reducers/userReducer";
 
 const fakeFeaturedProducts = [
     {
@@ -319,14 +320,33 @@ const ClientMainContent = () => {
                     <h2 className="text-3xl font-bold text-gray-800 mb-6 flex items-center">
                         <FiShoppingBag className="mr-2" /> Danh mục sản phẩm
                     </h2>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-12">
+                    <Swiper
+                        modules={[Navigation, Pagination]}
+                        spaceBetween={24}
+                        slidesPerView={2}
+                        breakpoints={{
+                            640: { slidesPerView: 3, spaceBetween: 20 },
+                            768: { slidesPerView: 4, spaceBetween: 24 },
+                            1024: { slidesPerView: 6, spaceBetween: 24 },
+                        }}
+                        navigation
+                        pagination={{ clickable: true }}
+                        className="mb-12"
+                    >
                         {categories.map((category, index) => (
-                            <div key={index} className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-2">{category.name}</h3>
-                                <p className="text-sm text-gray-600">{category.productCount} sản phẩm</p>
-                            </div>
+                            <SwiperSlide key={index}>
+                                <div
+                                    className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+                                    onClick={()=>{
+                                        dispatch(setSelectedCategory(category.id))
+                                        navigate('/client/products')
+                                    }}
+                                >
+                                    <h3 className="text-lg font-semibold text-gray-800 mb-2">{category.name}</h3>
+                                </div>
+                            </SwiperSlide>
                         ))}
-                    </div>
+                    </Swiper>
                 </section>
 
                 {/* New Arrivals Section */}

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import { FiSearch, FiBell, FiUser, FiLogOut, FiMenu } from 'react-icons/fi';
 import useAxiosSupport from "../../hooks/useAxiosSupport";
-import {FaShoppingCart} from "react-icons/fa";
+import {FaHeart, FaShoppingCart} from "react-icons/fa";
 import {logout} from "../../redux/reducers/userReducer";
 import {useDispatch} from "react-redux";
 import {Fan, FileText, FolderKanban, HelpCircle, Home, LogOut, Pointer, User, Users, X} from "lucide-react";
@@ -150,6 +150,9 @@ export default function ClientHeader({ currentUser, onMenuClick }) {
 
           <button onClick={handleCartClick} className="text-gray hover:text-[#f2a429] transition-colors">
             <FaShoppingCart className="h-6 w-6"/>
+          </button>
+          <button onClick={()=>{navigate('/client/wishlist')}} className="text-gray hover:text-[#f2a429] transition-colors">
+            <FaHeart className="h-6 w-6"/>
           </button>
           <div className="relative" ref={userMenuRef}>
             <button

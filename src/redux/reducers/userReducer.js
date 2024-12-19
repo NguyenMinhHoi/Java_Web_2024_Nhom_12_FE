@@ -7,6 +7,7 @@ const initialState = {
   authenticate: null,
   role: null,
   id: null,
+  selectedCategory: null
 };
 
 // Định nghĩa action types
@@ -15,6 +16,7 @@ const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const LOGIN_FAILURE = 'LOGIN_FAILURE';
 const LOGOUT = 'LOGOUT';
 const ADDRESS = 'ADDRESS';
+const CATEGORY= 'CATEGORY'
 
 // Reducer
 const userReducer = (state = initialState, action) => {
@@ -57,7 +59,10 @@ const userReducer = (state = initialState, action) => {
           role: action.payload.role,
           id: action.payload.id,
         }
-      case 'SET_ROLE':
+    case CATEGORY: return {
+      ...state,
+      selectedCategory: action.payload,
+    }
     default:
       return state;
   }
@@ -90,4 +95,9 @@ export const setAuthenticate = (token, role,id) => ({
 export const setAddressUser = (address) => ({
   type: ADDRESS,
   payload: address
+});
+
+export const setSelectedCategory = (category) => ({
+  type: CATEGORY,
+  payload: category
 });

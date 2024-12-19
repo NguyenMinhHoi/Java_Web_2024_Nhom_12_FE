@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { FiStar, FiShoppingBag, FiMail, FiPhone, FiClock, FiMapPin, FiTag, FiTruck, FiShield } from 'react-icons/fi';
+import {
+    FiStar,
+    FiShoppingBag,
+    FiMail,
+    FiPhone,
+    FiClock,
+    FiMapPin,
+    FiTag,
+    FiTruck,
+    FiShield,
+    FiArrowLeft
+} from 'react-icons/fi';
 import { FaStar, FaHeart } from 'react-icons/fa';
 import { useParams } from "react-router-dom";
 import HomeHeader from "./HomeHeader";
@@ -9,6 +20,7 @@ import default_image from "../assets/images/default-image.svg";
 import {useSelector} from "react-redux";
 import ClientHeader from "../pages/clientPage/ClientHeader";
 import {formatLastAccess} from "../utils/DateUtil";
+import ShopSectionCard from "./ShopSectionCard";
 
 const ShopDetails = () => {
     const {id: userId} = useSelector(state => state.user);
@@ -19,31 +31,74 @@ const ShopDetails = () => {
     const [activeTab, setActiveTab] = useState('products');
     const [sortBy, setSortBy] = useState('popular');
     const [isFollowing, setIsFollowing] = useState(false);
+    const [shopSections, setShopSections] = useState([]);
+    const [productsSections, setProductSections] = useState([]);
     const axiosInstance = useAxiosSupport();
 
     const [currentPage, setCurrentPage] = useState(1);
-    const productsPerPage = 6; // Number of products per page
-
+    const productsPerPage = 6;
+    const [currentProducts, setCurrentProducts] = useState([]);
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const [currentProducts, setCurrentProducts] = useState([]);
+    const [totalPages,setTotalPages] = useState('0');
+    const [available,setAvailable] = useState(1);
 
-    const totalPages = Math.ceil(products.length / productsPerPage);
+    useEffect(() => {
+         setCurrentProducts(products.slice(indexOfFirstProduct, indexOfLastProduct));
+    }, [currentPage]);
+
 
     useEffect(() => {
         const fetchShopDetails = async () => {
             try {
                 const res = await axiosInstance.getShopDetails(id);
                 setShop(res);
-                setProducts(res.variants);
                 setReviews(res.comments);
             } catch (error) {
                 console.error('Error fetching shop details:', error);
             }
         };
-
         fetchShopDetails();
     }, [id, axiosInstance]);
+
+    useEffect(() => {
+        setAvailable(products.length/6);
+    }, [products]);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            if (activeTab === 'products' && available === currentPage) {
+                try {
+                    const params = {
+                        merchantId: id,
+                        page: currentPage - 1,
+                        size: productsPerPage * 3
+                    };
+                    const res = await axiosInstance.getMerchantProducts(params);
+                    setProducts([...products, ...res.content]);
+                    setTotalPages(res.totalPages);
+                    setCurrentProducts(res.slice(0, productsPerPage));
+                } catch (error) {
+                    console.error('Error fetching products:', error);
+                }
+            }
+        };
+        fetchProduct();
+    }, [activeTab, axiosInstance, currentPage, available]);
+
+    useEffect(() => {
+        const fetchShopSection = async () => {
+            if (activeTab === 'sections') {
+                try {
+                    const res = await axiosInstance.getCategoriesByShop(id);
+                    setShopSections(res);
+                } catch (error) {
+                    console.error('Error fetching shop section:', error);
+                }
+            }
+        };
+        fetchShopSection();
+    }, [activeTab, axiosInstance]);
 
     if (!shop) {
         return (
@@ -68,19 +123,6 @@ const ShopDetails = () => {
         }
     }
 
-    const sortProducts = (products) => {
-        switch (sortBy) {
-            case 'price-low':
-                return [...products].sort((a, b) => a.minPrice - b.minPrice);
-            case 'price-high':
-                return [...products].sort((a, b) => b.maxPrice - a.maxPrice);
-            case 'newest':
-                return [...products].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            default:
-                return products;
-        }
-    }
-
     const handleNextPage = () => {
         if (currentPage < totalPages) {
             setCurrentPage(currentPage + 1);
@@ -92,6 +134,7 @@ const ShopDetails = () => {
             setCurrentPage(currentPage - 1);
         }
     };
+
 
     return (
         <>
@@ -124,7 +167,7 @@ const ShopDetails = () => {
                                 className={`flex items-center px-4 py-2 rounded ${isFollowing ? 'bg-gray-200 text-gray-800' : 'bg-blue-500 text-white'}`}
                             >
                                 <FaHeart className="mr-2"/>
-                                {isFollowing ? 'Äang theo dÃµi' : 'Theo dÃµi'}
+                                {isFollowing ? 'Đang theo dõi' : 'Theo dõi'}
                             </button>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
@@ -157,19 +200,19 @@ const ShopDetails = () => {
                                     className={`px-4 py-2 font-medium ${activeTab === 'products' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}
                                     onClick={() => setActiveTab('products')}
                                 >
-                                    Sáº£n pháº©m
+                                    Sản phẩm
                                 </button>
                                 <button
                                     className={`px-4 py-2 font-medium ${activeTab === 'reviews' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}
                                     onClick={() => setActiveTab('reviews')}
                                 >
-                                    ÄÃ¡nh giÃ¡
+                                    Đánh giá
                                 </button>
                                 <button
-                                    className={`px-4 py-2 font-medium ${activeTab === 'reviews' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}
-                                    onClick={() => setActiveTab('reviews')}
+                                    className={`px-4 py-2 font-medium ${activeTab === 'categories' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'}`}
+                                    onClick={() => setActiveTab('sections')}
                                 >
-                                    Danh má»¥c
+                                    Danh mục
                                 </button>
                             </div>
                             {activeTab === 'products' && (
@@ -178,10 +221,10 @@ const ShopDetails = () => {
                                     value={sortBy}
                                     onChange={(e) => setSortBy(e.target.value)}
                                 >
-                                    <option value="popular">Phá»• biáº¿n</option>
-                                    <option value="price-low">GiÃ¡ tháº¥p Ä‘áº¿n cao</option>
-                                    <option value="price-high">GiÃ¡ cao Ä‘áº¿n tháº¥p</option>
-                                    <option value="newest">Má»›i nháº¥t</option>
+                                <option value="popular">Phổ biến</option>
+                                    <option value="price-low">Giá thấp đến cao</option>
+                                    <option value="price-high">Giá cao đến thấp</option>
+                                    <option value="newest">Mới nhất</option>
                                 </select>
                             )}
                         </nav>
@@ -196,8 +239,8 @@ const ShopDetails = () => {
                                              className="w-full h-48 object-cover"/>
                                         <div className="p-4">
                                             <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
-                                            <p className="text-blue-600 font-bold">{product.minPrice}Ä‘
-                                                - {product.maxPrice}Ä‘</p>
+                                            <p className="text-blue-600 font-bold">{product.minPrice}đ
+                                                - {product.maxPrice}đ</p>
                                             <div className="flex items-center mt-2">
                                                 <FiStar className="text-yellow-400 mr-1"/>
                                                 <span>{product.rating}</span>
@@ -205,7 +248,7 @@ const ShopDetails = () => {
                                             <button
                                                 className="mt-3 flex items-center justify-center w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
                                                 <FiShoppingBag className="mr-2"/>
-                                                ThÃªm vÃ o giá»
+                                                Thêm vào giỏ
                                             </button>
                                         </div>
                                     </div>
@@ -217,7 +260,7 @@ const ShopDetails = () => {
                                     disabled={currentPage === 1}
                                     className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
                                 >
-                                    Trang trÆ°á»›c
+                                    Trang trước
                                 </button>
                                 <span>Page {currentPage} of {totalPages}</span>
                                 <button
@@ -230,7 +273,7 @@ const ShopDetails = () => {
                             </div>
                         </div>
                     )}
-
+                
                     {activeTab === 'reviews' && (
                         <div className="p-6 space-y-4">
                             {reviews.map((comment, index) => (
@@ -264,12 +307,57 @@ const ShopDetails = () => {
                                     )}
                                 </div>
                             ))}
+
                         </div>
                     )}
-                </div>
-            </div>
-            <HomeFooter/>
-        </>
+
+                    {activeTab === 'sections' && (
+                        <div className="p-6 space-y-4">
+                            {!productsSections.length? (
+                                shopSections.map((section, index) => (
+                                    <ShopSectionCard
+                                        key={index}
+                                        section={section}
+                                        onSectionClick={(products) => { setProductSections(products) }}
+                                    />
+                                ))
+                            ) : (
+                                productsSections.length > 0 && (
+                                    <>
+                                        <p className={'button hover:cursor-cell'}  onClick={()=>setProductSections([])}><FiArrowLeft size={40}/></p>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        {productsSections.map((product, index) => (
+                                            <div key={product.id}
+                                                 className="bg-white shadow-md rounded-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+                                                <img src={product?.image[0]?.path || default_image} alt={product.name}
+                                                     className="w-full h-48 object-cover"/>
+                                                <div className="p-4">
+                                                    <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
+                                                    <p className="text-blue-600 font-bold">{product.minPrice}đ
+                                                        - {product.maxPrice}đ</p>
+                                                    <div className="flex items-center mt-2">
+                                                        <FiStar className="text-yellow-400 mr-1"/>
+                                                        <span>{product.rating}</span>
+                                                    </div>
+                                                    <button
+                                                        className="mt-3 flex items-center justify-center w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">
+                                                        <FiShoppingBag className="mr-2"/>
+                                                        Thêm vào giỏ
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    </>
+                                    )
+                                    )}
+                                    </div>
+                                )}
+
+                        </div>
+                        </div>
+                        <HomeFooter/>
+                        </>
     );
 }
 export default ShopDetails;

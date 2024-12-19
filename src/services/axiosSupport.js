@@ -505,6 +505,18 @@ class AxiosSupport {
         });
     }
 
+    async getMerchantProducts(params) {
+        return this.fetchWithAuth('getMerchantProducts', {
+            method: 'GET',
+            params
+        });
+    }
+    async getMerchantCategoriesInShopSection(id) {
+        return this.fetchWithAuth('getProductsInShopSection', {
+            method: 'GET',
+        },id);
+    }
+
 }
 
 export default AxiosSupport;
