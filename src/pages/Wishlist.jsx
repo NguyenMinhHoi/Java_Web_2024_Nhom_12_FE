@@ -51,7 +51,10 @@ const Wishlist = () => {
 
   const handleRemoveItem = async (itemId) => {
     try {
-      await axiosSupport.removeFromWishlist(user.id, itemId, activeTab);
+        if(activeTab ==='products')
+      await axiosSupport.removeProductFromWishlist(itemId,user.id);
+        else
+            await axiosSupport.removeShopFromWishlist(itemId,user.id)
       fetchWishlistData();
     } catch (error) {
       console.error('Error removing item from wishlist:', error);
@@ -59,9 +62,8 @@ const Wishlist = () => {
   };
 
     const renderCard = (item) => (
-        <div key={item.id} className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105" onClick={()=> {
-            activeTab === 'products'? navigate(`/client/details/${item.id}`) : navigate(`/shop/${item.id}`) 
-        }}>
+        <div key={item.id} className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-105"
+             >
             <div className="relative">
                 <img
                     src={activeTab === 'products'
@@ -70,6 +72,9 @@ const Wishlist = () => {
                     }
                     alt={item.name}
                     className="w-full h-48 object-cover"
+                    onClick={()=> {
+                        activeTab === 'products'? navigate(`/client/details/${item.id}`) : navigate(`/shop/${item.id}`)
+                    }}
                 />
                 <button
                     onClick={() => handleRemoveItem(item.id)}
