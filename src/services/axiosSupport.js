@@ -516,6 +516,11 @@ class AxiosSupport {
             method: 'GET',
         },id);
     }
+    async deleteProduct(id){
+        return this.fetchWithAuth('deleteProduct', {
+            method: 'DELETE',
+        },id);
+    }
 
 }
 

@@ -62,6 +62,7 @@ const urlManager = {
       approvalForm: '/form/approval',
       rejectForm: '/form/reject',
       getMerchantProducts: `/products/merchant`,
+      deleteProduct: "/{id}"
 };
 
 export default urlManager;

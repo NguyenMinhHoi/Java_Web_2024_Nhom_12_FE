@@ -55,12 +55,11 @@ export default function ProductsDashBoard() {
     };
 
     const handleEditProduct = (product) => {
-        // Implement edit functionality
         console.log("Editing product:", product);
     };
 
-    const handleDeleteProduct = (productId) => {
-        // Implement delete functionality
+    const handleDeleteProduct = async (productId) => {
+        await axiosSupport.deleteProduct(productId)
         console.log("Deleting product with ID:", productId);
     };
 
