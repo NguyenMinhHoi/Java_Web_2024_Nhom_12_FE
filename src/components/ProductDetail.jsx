@@ -588,10 +588,10 @@ const ProductDetail = () => {
             {/* Contact div */}
             <div id="contact" className="py-12 md:py-20">
                 <div className="container mx-auto text-center">
-                    <h2 className="text-2xl md:text-3xl font-bold mb-8">ThÃ´ng tin liÃªn há»‡</h2>
+                    <h2 className="text-2xl md:text-3xl font-bold mb-8">Thông tin liên hệ</h2>
                     <a href="mailto:library@university.edu"
                        className="bg-[#0b328f] text-white px-4 py-2 md:px-6 md:py-3 rounded-full hover:bg-[#08367b] text-base md:text-lg transition-transform transform hover:scale-105">
-                        <FaEnvelope size={20} className="inline mr-2"/> Gá»­i Email
+                        <FaEnvelope size={20} className="inline mr-2"/> Gửi Email
                     </a>
                 </div>
             </div>
