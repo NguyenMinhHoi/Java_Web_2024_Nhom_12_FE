@@ -69,7 +69,7 @@ export const StatCard = ({ title, value, icon: Icon, change }) => (
             <Icon className="text-gray-400 w-5 h-5" />
         </div>
         <p className="text-2xl font-semibold text-gray-900">{value}</p>
-        <p className={`text-sm ${change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
+        <p className={`text-sm ${!change.startsWith('-') ? 'text-green-600' : 'text-red-600'}`}>
             {change}
         </p>
     </div>
